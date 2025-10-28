@@ -1,38 +1,74 @@
 import React from 'react';
 import type { Dish } from '../types';
-import { VegIcon, NonVegIcon } from './IconComponents';
+import { VegIcon, NonVegIcon, BestsellerIcon, PlusIcon, MinusIcon } from './IconComponents';
 
 interface DishCardProps {
   dish: Dish;
-  onAddToCart: (dish: Dish) => void;
+  quantity: number;
+  onIncrease: () => void;
+  onDecrease: () => void;
+  onImageClick: () => void;
 }
 
-const DishCard: React.FC<DishCardProps> = ({ dish, onAddToCart }) => {
+const DishCard: React.FC<DishCardProps> = ({ dish, quantity, onIncrease, onDecrease, onImageClick }) => {
   return (
-    <div className="bg-slate-50 rounded-lg overflow-hidden border border-gray-200 flex flex-col hover:shadow-md transition-shadow duration-300">
-      <div className="flex items-start p-4">
-        <div className="flex-grow">
-          <div className="flex justify-between items-center mb-1">
-            <h4 className="font-bold text-gray-800">{dish.name}</h4>
-            {dish.isVeg ? <VegIcon className="h-5 w-5"/> : <NonVegIcon className="h-5 w-5"/>}
-          </div>
-          <p className="text-sm text-gray-500 mb-2">{dish.description}</p>
-          <div className="font-semibold text-primary">₹{dish.price}</div>
+    <div className="flex items-start justify-between py-4 border-b last:border-b-0">
+      <div className="flex-grow pr-4">
+        <div className="flex items-center mb-1">
+          {dish.isVeg ? <VegIcon className="h-5 w-5 mr-2"/> : <NonVegIcon className="h-5 w-5 mr-2"/>}
+          {dish.bestseller && (
+            <span className="flex items-center text-xs font-bold text-red-500 mr-2">
+              <BestsellerIcon className="w-4 h-4 mr-1" />
+              Bestseller
+            </span>
+          )}
         </div>
-        <img
-          src={dish.imageUrl}
-          alt={dish.name}
-          className="w-24 h-24 object-cover rounded-md ml-4 flex-shrink-0"
-        />
+        <h4 className="font-semibold text-gray-800">{dish.name}</h4>
+        <div className="font-semibold text-gray-700 my-1">₹{dish.price}</div>
+        <p className="text-sm text-gray-500">{dish.description}</p>
       </div>
-      <div className="mt-auto p-4 pt-0">
+      
+      <div className="flex-shrink-0 text-center relative">
         <button 
-            onClick={() => onAddToCart(dish)}
-            className="w-full bg-primary text-white font-semibold py-2 px-4 rounded-lg hover:bg-primary-dark transition-colors duration-300 text-sm"
-            aria-label={`Add ${dish.name} to cart`}
+          onClick={onImageClick} 
+          className="block group rounded-md overflow-hidden focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+          aria-label={`View larger image of ${dish.name}`}
         >
-            Add to Cart
+          <img
+            src={dish.imageUrl}
+            alt={dish.name}
+            className="w-28 h-28 object-cover transition-transform duration-300 group-hover:scale-110"
+          />
         </button>
+        <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-[90px]">
+          {quantity > 0 ? (
+            <div className="flex items-center justify-between bg-white text-primary font-bold shadow-lg rounded-md border border-gray-200 text-lg">
+              <button 
+                onClick={onDecrease} 
+                className="px-3 py-1 hover:bg-gray-100 rounded-l-md"
+                aria-label={`Decrease quantity of ${dish.name}`}
+              >
+                <MinusIcon className="w-4 h-4" />
+              </button>
+              <span className="px-2">{quantity}</span>
+              <button 
+                onClick={onIncrease} 
+                className="px-3 py-1 hover:bg-gray-100 rounded-r-md"
+                aria-label={`Increase quantity of ${dish.name}`}
+              >
+                <PlusIcon className="w-4 h-4" />
+              </button>
+            </div>
+          ) : (
+            <button 
+              onClick={onIncrease}
+              className="bg-white text-primary font-bold py-1 px-6 shadow-lg rounded-md border border-gray-200 hover:bg-primary-light hover:text-white transition-colors"
+              aria-label={`Add ${dish.name} to cart`}
+            >
+              ADD
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

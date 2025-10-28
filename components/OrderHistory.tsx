@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 // Fix: Import OrderStatus type
-import type { Order, OrderStatus } from '../types';
+import type { Order, OrderStatus, CartItem } from '../types';
 import { CloseIcon, HistoryIcon, ChevronDownIcon } from './IconComponents';
 
 interface OrderHistoryProps {
@@ -90,9 +90,9 @@ const OrderHistory: React.FC<OrderHistoryProps> = ({ isOpen, onClose, orders, on
                             <p className="text-sm font-semibold text-gray-700 mb-2">Items Ordered:</p>
                             <ul className="space-y-1 text-sm text-gray-600 mb-4">
                                 {order.items.map((item, itemIndex) => (
-                                    <li key={`${item.id}-${itemIndex}`} className="flex justify-between">
-                                        <span>{item.name}</span>
-                                        <span>₹{item.price.toFixed(2)}</span>
+                                    <li key={`${item.dish.id}-${itemIndex}`} className="flex justify-between">
+                                        <span>{item.quantity} x {item.dish.name}</span>
+                                        <span>₹{(item.dish.price * item.quantity).toFixed(2)}</span>
                                     </li>
                                 ))}
                             </ul>

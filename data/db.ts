@@ -19,7 +19,8 @@ export const restaurants: Restaurant[] = [
         "price": 250,
         "isVeg": true,
         "description": "A complete vegetarian platter with rice, sambar, rasam, curries, and dessert.",
-        "imageUrl": "https://plus.unsplash.com/premium_photo-1695288243931-483163355004?q=80&w=600"
+        "imageUrl": "https://plus.unsplash.com/premium_photo-1695288243931-483163355004?q=80&w=600",
+        "bestseller": true
       },
       {
         "id": "dish002",
@@ -57,7 +58,8 @@ export const restaurants: Restaurant[] = [
         "price": 320,
         "isVeg": false,
         "description": "The world-famous aromatic basmati rice cooked with succulent chicken and spices.",
-        "imageUrl": "https://images.unsplash.com/photo-1589302168068-964664d93dc0?q=80&w=600"
+        "imageUrl": "https://images.unsplash.com/photo-1589302168068-964664d93dc0?q=80&w=600",
+        "bestseller": true
       },
       {
         "id": "dish005",
@@ -103,7 +105,8 @@ export const restaurants: Restaurant[] = [
         "price": 350,
         "isVeg": false,
         "description": "Succulent chicken pieces layered with fragrant basmati rice and cooked to perfection.",
-        "imageUrl": "https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a?q=80&w=600"
+        "imageUrl": "https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a?q=80&w=600",
+        "bestseller": true
       },
       {
         "id": "dish009",
@@ -133,7 +136,8 @@ export const restaurants: Restaurant[] = [
         "price": 180,
         "isVeg": true,
         "description": "A crispy dosa smeared with a spicy powder and topped with a generous amount of ghee.",
-        "imageUrl": "https://images.unsplash.com/photo-1668665793318-1025f826360c?q=80&w=600"
+        "imageUrl": "https://images.unsplash.com/photo-1668665793318-1025f826360c?q=80&w=600",
+        "bestseller": true
       },
       {
         "id": "dish011",
@@ -171,7 +175,8 @@ export const restaurants: Restaurant[] = [
         "price": 280,
         "isVeg": false,
         "description": "A rich and slow-cooked delicacy of meat, lentils, and wheat, a Ramzan specialty.",
-        "imageUrl": "https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a?q=80&w=600"
+        "imageUrl": "https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a?q=80&w=600",
+        "bestseller": true
       },
       {
         "id": "dish014",
@@ -247,7 +252,8 @@ export const restaurants: Restaurant[] = [
         "price": 300,
         "isVeg": false,
         "description": "Award-winning Haleem known for its authentic taste and rich texture.",
-        "imageUrl": "https://images.unsplash.com/photo-1599043513900-ed6fe01d3833?q=80&w=600"
+        "imageUrl": "https://images.unsplash.com/photo-1599043513900-ed6fe01d3833?q=80&w=600",
+        "bestseller": true
       },
       {
         "id": "dish020",

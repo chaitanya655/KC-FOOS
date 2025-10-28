@@ -1,7 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { restaurants as initialRestaurants } from './data/db';
-import { categories } from './data/categories';
-import type { Restaurant, Dish, Order, OrderStatus } from './types';
+import React, { useState, useEffect, useCallback } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import RestaurantList from './components/RestaurantList';
@@ -9,198 +6,347 @@ import RestaurantDetail from './components/RestaurantDetail';
 import CartView from './components/CartView';
 import OrderHistory from './components/OrderHistory';
 import FoodCategoryFilter from './components/FoodCategoryFilter';
-import { SearchIcon, SortIcon } from './components/IconComponents';
+import SkeletonRestaurantCard from './components/SkeletonRestaurantCard';
+import BackToTopButton from './components/BackToTopButton';
+import ToastContainer from './components/ToastContainer';
+import ConfirmationDialog from './components/ConfirmationDialog';
+import { restaurants as allRestaurants } from './data/db';
+import { categories as allCategories } from './data/categories';
+import type { Restaurant, Dish, Order, OrderStatus, CartItem } from './types';
+
+interface Toast {
+  id: number;
+  message: string;
+  type: 'success' | 'error';
+}
 
 const App: React.FC = () => {
-  const [restaurants, setRestaurants] = useState<Restaurant[]>(initialRestaurants);
-  const [filteredRestaurants, setFilteredRestaurants] = useState<Restaurant[]>(initialRestaurants);
-  const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
-  
-  const [cartItems, setCartItems] = useState<Dish[]>([]);
-  const [isCartOpen, setIsCartOpen] = useState(false);
-
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
-
-  const [favoriteRestaurants, setFavoriteRestaurants] = useState<string[]>(() => {
-    const savedFavorites = localStorage.getItem('favoriteRestaurants');
-    return savedFavorites ? JSON.parse(savedFavorites) : [];
-  });
-  
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('all');
-  const [sortOption, setSortOption] = useState('rating');
-
-  useEffect(() => {
-    localStorage.setItem('favoriteRestaurants', JSON.stringify(favoriteRestaurants));
-  }, [favoriteRestaurants]);
-
-  useEffect(() => {
-    let result = restaurants;
-
-    // Filter by category
-    if (selectedCategory !== 'all') {
-      result = result.filter(r => 
-        r.cuisine.toLowerCase().includes(selectedCategory.toLowerCase()) ||
-        r.dishes.some(d => d.name.toLowerCase().includes(selectedCategory.toLowerCase()))
-      );
-    }
+    const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
+    const [filteredRestaurants, setFilteredRestaurants] = useState<Restaurant[]>([]);
+    const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
+    const [cartItems, setCartItems] = useState<CartItem[]>(() => {
+        try {
+            const savedCart = localStorage.getItem('cartItems');
+            return savedCart ? JSON.parse(savedCart) : [];
+        } catch (error) {
+            return [];
+        }
+    });
+    const [isCartOpen, setIsCartOpen] = useState(false);
+    const [orders, setOrders] = useState<Order[]>(() => {
+        try {
+            const savedOrders = localStorage.getItem('orders');
+            return savedOrders ? JSON.parse(savedOrders) : [];
+        } catch (error) {
+            return [];
+        }
+    });
+    const [isOrderHistoryOpen, setIsOrderHistoryOpen] = useState(false);
     
-    // Filter by search term
-    if (searchTerm) {
-      result = result.filter(r =>
-        r.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        r.cuisine.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        r.dishes.some(d => d.name.toLowerCase().includes(searchTerm.toLowerCase()))
-      );
-    }
-
-    // Sort
-    const sortedResult = [...result].sort((a, b) => {
-      if (sortOption === 'rating') {
-        return b.rating - a.rating;
-      }
-      if (sortOption === 'deliveryTime') {
-        const timeA = parseInt(a.deliveryTime);
-        const timeB = parseInt(b.deliveryTime);
-        return timeA - timeB;
-      }
-      return 0;
+    const [searchQuery, setSearchQuery] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState('all');
+    const [sortOption, setSortOption] = useState('rating');
+    const [isVegOnly, setIsVegOnly] = useState(false);
+    
+    const [favoriteRestaurants, setFavoriteRestaurants] = useState<string[]>(() => {
+        try {
+            const savedFavorites = localStorage.getItem('favoriteRestaurants');
+            return savedFavorites ? JSON.parse(savedFavorites) : [];
+        } catch (error) {
+            return [];
+        }
     });
 
-    setFilteredRestaurants(sortedResult);
-  }, [searchTerm, selectedCategory, sortOption, restaurants]);
+    const [toasts, setToasts] = useState<Toast[]>([]);
+    const [dialogConfig, setDialogConfig] = useState<{
+        isOpen: boolean;
+        title: string;
+        message: string;
+        onConfirm: () => void;
+    } | null>(null);
+    
+    const [isLoading, setIsLoading] = useState(true);
+    const [isBackToTopVisible, setIsBackToTopVisible] = useState(false);
 
-  const handleSelectRestaurant = (restaurant: Restaurant) => {
-    setSelectedRestaurant(restaurant);
-  };
+    useEffect(() => {
+        setTimeout(() => {
+            setRestaurants(allRestaurants);
+            setIsLoading(false);
+        }, 1500);
+    }, []);
 
-  const handleCloseDetail = () => {
-    setSelectedRestaurant(null);
-  };
+    useEffect(() => {
+        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    }, [cartItems]);
 
-  const handleAddToCart = (dish: Dish) => {
-    setCartItems(prev => [...prev, dish]);
-  };
+    useEffect(() => {
+        localStorage.setItem('orders', JSON.stringify(orders));
+    }, [orders]);
 
-  const handleRemoveFromCart = (index: number) => {
-    setCartItems(prev => prev.filter((_, i) => i !== index));
-  };
-  
-  const handleEmptyCart = () => {
-    setCartItems([]);
-  };
+    useEffect(() => {
+        localStorage.setItem('favoriteRestaurants', JSON.stringify(favoriteRestaurants));
+    }, [favoriteRestaurants]);
+    
+    useEffect(() => {
+        let result = restaurants;
 
-  const handleCheckout = () => {
-    if (cartItems.length === 0) return;
-    const subtotal = cartItems.reduce((sum, item) => sum + item.price, 0);
-    const taxesAndFees = subtotal * 0.05;
-    const deliveryFee = 40.00;
-    const total = subtotal + taxesAndFees + deliveryFee;
+        if (isVegOnly) {
+            result = result.filter(r => r.isVeg);
+        }
 
-    const newOrder: Order = {
-      id: `order-${Date.now()}`,
-      date: new Date().toISOString(),
-      items: [...cartItems],
-      totalAmount: total,
-      status: 'Processing',
+        if (selectedCategory !== 'all') {
+            result = result.filter(r => 
+                r.cuisine.toLowerCase().includes(selectedCategory.toLowerCase()) ||
+                r.dishes.some(d => d.name.toLowerCase().includes(selectedCategory.toLowerCase()))
+            );
+        }
+
+        if (searchQuery) {
+            result = result.filter(r => 
+                r.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                r.cuisine.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                r.dishes.some(d => d.name.toLowerCase().includes(searchQuery.toLowerCase()))
+            );
+        }
+
+        const sortedResult = [...result].sort((a, b) => {
+            if (sortOption === 'rating') {
+                return b.rating - a.rating;
+            }
+            if (sortOption === 'deliveryTime') {
+                const timeA = parseInt(a.deliveryTime);
+                const timeB = parseInt(b.deliveryTime);
+                return timeA - timeB;
+            }
+            return 0;
+        });
+
+        setFilteredRestaurants(sortedResult);
+    }, [restaurants, searchQuery, selectedCategory, sortOption, isVegOnly]);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 300) {
+                setIsBackToTopVisible(true);
+            } else {
+                setIsBackToTopVisible(false);
+            }
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    const showToast = useCallback((message: string, type: 'success' | 'error' = 'success') => {
+        const newToast = { id: Date.now(), message, type };
+        setToasts(prevToasts => [...prevToasts, newToast]);
+        setTimeout(() => {
+            setToasts(currentToasts => currentToasts.filter(t => t.id !== newToast.id));
+        }, 3000);
+    }, []);
+
+    const handleIncreaseQuantity = useCallback((dish: Dish) => {
+        setCartItems(prevItems => {
+            const existingItem = prevItems.find(item => item.dish.id === dish.id);
+            if (existingItem) {
+                return prevItems.map(item =>
+                    item.dish.id === dish.id ? { ...item, quantity: item.quantity + 1 } : item
+                );
+            }
+            return [...prevItems, { dish, quantity: 1 }];
+        });
+        showToast(`${dish.name} added to cart!`);
+    }, [showToast]);
+    
+    const handleDecreaseQuantity = useCallback((dishId: string) => {
+        setCartItems(prevItems => {
+            const existingItem = prevItems.find(item => item.dish.id === dishId);
+            if (existingItem) {
+                if (existingItem.quantity > 1) {
+                    return prevItems.map(item =>
+                        item.dish.id === dishId ? { ...item, quantity: item.quantity - 1 } : item
+                    );
+                } else {
+                    showToast(`${existingItem.dish.name} removed from cart.`, 'error');
+                    return prevItems.filter(item => item.dish.id !== dishId);
+                }
+            }
+            return prevItems;
+        });
+    }, [showToast]);
+
+    
+    const handleToggleFavorite = useCallback((restaurantId: string) => {
+        setFavoriteRestaurants(prev => {
+            const isFavorite = prev.includes(restaurantId);
+            if (isFavorite) {
+                showToast('Removed from favorites', 'error');
+                return prev.filter(id => id !== restaurantId);
+            } else {
+                showToast('Added to favorites');
+                return [...prev, restaurantId];
+            }
+        });
+    }, [showToast]);
+
+    const handleCheckout = () => {
+        const subtotal = cartItems.reduce((sum, item) => sum + item.dish.price * item.quantity, 0);
+        const taxesAndFees = subtotal * 0.05;
+        const deliveryFee = cartItems.length > 0 ? 40.00 : 0;
+        const totalAmount = subtotal + taxesAndFees + deliveryFee;
+
+        const newOrder: Order = {
+            id: `ORD-${Date.now()}`,
+            date: new Date().toISOString(),
+            items: [...cartItems],
+            totalAmount: totalAmount,
+            status: 'Processing',
+        };
+        setOrders(prevOrders => [...prevOrders, newOrder]);
+        setCartItems([]);
+        setIsCartOpen(false);
+        showToast('Order placed successfully!');
     };
-    setOrders(prev => [...prev, newOrder]);
-    setCartItems([]);
-    setIsCartOpen(false);
-    alert('Your order has been placed successfully!');
-  };
 
-  const handleUpdateOrderStatus = (orderId: string, status: OrderStatus) => {
-    setOrders(prev => 
-      prev.map(order => 
-        order.id === orderId ? { ...order, status } : order
-      )
-    );
-  };
-  
-  const handleToggleFavorite = (restaurantId: string) => {
-    setFavoriteRestaurants(prev =>
-      prev.includes(restaurantId)
-        ? prev.filter(id => id !== restaurantId)
-        : [...prev, restaurantId]
-    );
-  };
-  
-  return (
-    <div className="bg-gray-50 min-h-screen">
-      <Header 
-        cartItemCount={cartItems.length}
-        onToggleCart={() => setIsCartOpen(!isCartOpen)}
-        onToggleHistory={() => setIsHistoryOpen(!isHistoryOpen)}
-      />
-      <main className="container mx-auto px-4 py-8">
-        <FoodCategoryFilter
-          categories={categories}
-          selectedCategory={selectedCategory}
-          onSelectCategory={setSelectedCategory}
+    const handlePromptCheckout = () => {
+        setDialogConfig({
+            isOpen: true,
+            title: 'Confirm Order',
+            message: 'Are you sure you want to place this order?',
+            onConfirm: () => {
+                handleCheckout();
+                setDialogConfig(null);
+            },
+        });
+    };
+
+    const handleEmptyCart = () => {
+        setCartItems([]);
+        showToast('Cart emptied.', 'error');
+    };
+
+    const handlePromptEmptyCart = () => {
+        setDialogConfig({
+            isOpen: true,
+            title: 'Empty Cart',
+            message: 'Are you sure you want to remove all items from your cart?',
+            onConfirm: () => {
+                handleEmptyCart();
+                setDialogConfig(null);
+            },
+        });
+    };
+    
+    const handleUpdateStatus = (orderId: string, status: OrderStatus) => {
+        setOrders(prevOrders => prevOrders.map(order => 
+            order.id === orderId ? { ...order, status } : order
+        ));
+        showToast(`Order status updated to ${status}.`);
+    };
+    
+    const cartItemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
+
+    return (
+      <div className="bg-gray-50 min-h-screen flex flex-col font-sans">
+        <Header 
+            onSearch={setSearchQuery}
+            cartItemCount={cartItemCount}
+            onOpenCart={() => setIsCartOpen(true)}
+            onOpenOrderHistory={() => setIsOrderHistoryOpen(true)}
         />
-        
-        <div className="flex flex-col md:flex-row justify-between items-center mb-6">
-            <h2 className="text-3xl font-bold text-gray-800 mb-4 md:mb-0">
-                Restaurants in Hyderabad
-            </h2>
-            <div className="flex items-center space-x-4 w-full md:w-auto">
-                <div className="relative flex-grow md:flex-grow-0">
-                    <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-                    <input
-                        type="text"
-                        placeholder="Search for restaurants or dishes"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-light"
-                    />
-                </div>
-                <div className="relative">
-                    <SortIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+        <main className="flex-grow container mx-auto px-4 py-8">
+            <FoodCategoryFilter 
+                categories={allCategories}
+                selectedCategory={selectedCategory}
+                onSelectCategory={setSelectedCategory}
+            />
+
+            <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+                <h2 className="text-3xl font-bold text-gray-800">
+                    {filteredRestaurants.length} Restaurants
+                </h2>
+                <div className="flex items-center space-x-4">
+                    <div className="flex items-center">
+                        <input
+                            type="checkbox"
+                            id="veg-only"
+                            checked={isVegOnly}
+                            onChange={(e) => setIsVegOnly(e.target.checked)}
+                            className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary-light"
+                        />
+                        <label htmlFor="veg-only" className="ml-2 text-sm font-medium text-gray-700">
+                            Veg Only
+                        </label>
+                    </div>
                     <select
                         value={sortOption}
                         onChange={(e) => setSortOption(e.target.value)}
-                        className="pl-10 pr-4 py-2 border border-gray-300 rounded-full appearance-none focus:outline-none focus:ring-2 focus:ring-primary-light bg-white"
+                        className="border-gray-300 rounded-md shadow-sm focus:border-primary-light focus:ring focus:ring-primary-light focus:ring-opacity-50 text-sm"
                     >
-                        <option value="rating">Rating</option>
-                        <option value="deliveryTime">Delivery Time</option>
+                        <option value="rating">Sort by Rating</option>
+                        <option value="deliveryTime">Sort by Delivery Time</option>
                     </select>
                 </div>
             </div>
-        </div>
 
-        <RestaurantList 
-          restaurants={filteredRestaurants}
-          onSelectRestaurant={handleSelectRestaurant}
-          favoriteRestaurants={favoriteRestaurants}
-          onToggleFavorite={handleToggleFavorite}
+            {isLoading ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    {Array.from({ length: 8 }).map((_, index) => <SkeletonRestaurantCard key={index} />)}
+                </div>
+            ) : (
+                <RestaurantList 
+                    restaurants={filteredRestaurants}
+                    onSelectRestaurant={setSelectedRestaurant}
+                    favoriteRestaurants={favoriteRestaurants}
+                    onToggleFavorite={handleToggleFavorite}
+                />
+            )}
+        </main>
+        
+        <Footer />
+        
+        {selectedRestaurant && (
+            <RestaurantDetail 
+                restaurant={selectedRestaurant}
+                onClose={() => setSelectedRestaurant(null)}
+                cartItems={cartItems}
+                onIncreaseQuantity={handleIncreaseQuantity}
+                onDecreaseQuantity={handleDecreaseQuantity}
+            />
+        )}
+        
+        <CartView 
+            isOpen={isCartOpen}
+            onClose={() => setIsCartOpen(false)}
+            cartItems={cartItems}
+            onIncreaseQuantity={handleIncreaseQuantity}
+            onDecreaseQuantity={handleDecreaseQuantity}
+            onPromptEmptyCart={handlePromptEmptyCart}
+            onPromptCheckout={handlePromptCheckout}
         />
-      </main>
-      <Footer />
-      {selectedRestaurant && (
-        <RestaurantDetail 
-          restaurant={selectedRestaurant}
-          onClose={handleCloseDetail}
-          onAddToCart={handleAddToCart}
+
+        <OrderHistory
+            isOpen={isOrderHistoryOpen}
+            onClose={() => setIsOrderHistoryOpen(false)}
+            orders={orders}
+            onUpdateStatus={handleUpdateStatus}
         />
-      )}
-      <CartView 
-        isOpen={isCartOpen}
-        onClose={() => setIsCartOpen(false)}
-        cartItems={cartItems}
-        onEmptyCart={handleEmptyCart}
-        onRemoveItem={handleRemoveFromCart}
-        onCheckout={handleCheckout}
-      />
-      <OrderHistory
-        isOpen={isHistoryOpen}
-        onClose={() => setIsHistoryOpen(false)}
-        orders={orders}
-        onUpdateStatus={handleUpdateOrderStatus}
-      />
-    </div>
-  );
+
+        <ToastContainer toasts={toasts} />
+
+        {dialogConfig && (
+            <ConfirmationDialog
+                isOpen={dialogConfig.isOpen}
+                title={dialogConfig.title}
+                message={dialogConfig.message}
+                onConfirm={dialogConfig.onConfirm}
+                onCancel={() => setDialogConfig(null)}
+                confirmText={dialogConfig.title.includes('Order') ? 'Place Order' : 'Confirm'}
+            />
+        )}
+
+        <BackToTopButton isVisible={isBackToTopVisible} />
+      </div>
+    );
 };
 
 export default App;

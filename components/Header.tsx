@@ -1,41 +1,67 @@
-import React from 'react';
-import { SteamingFoodIcon, CartIcon, HistoryIcon } from './IconComponents';
+import React, { useState } from 'react';
+import { SteamingFoodIcon, SearchIcon, CartIcon, HistoryIcon } from './IconComponents';
 
 interface HeaderProps {
+    onSearch: (query: string) => void;
     cartItemCount: number;
-    onToggleCart: () => void;
-    onToggleHistory: () => void;
+    onOpenCart: () => void;
+    onOpenOrderHistory: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ cartItemCount, onToggleCart, onToggleHistory }) => {
-  return (
-    <header className="bg-white shadow-md sticky top-0 z-10">
-      <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <div className="flex items-center space-x-3">
-            <SteamingFoodIcon className="h-8 w-8 text-primary" />
-            <h1 className="text-2xl font-bold text-gray-800 tracking-tight">
-                KC <span className="text-primary">FOOD</span>
-            </h1>
-        </div>
-        <div className="flex items-center space-x-2">
-            <button onClick={onToggleHistory} className="p-2 rounded-full hover:bg-gray-100 transition-colors" aria-label="View order history">
-                <HistoryIcon className="h-7 w-7 text-gray-600" />
-            </button>
-            <button onClick={onToggleCart} className="relative p-2 rounded-full hover:bg-gray-100 transition-colors" aria-label="View cart">
-                <CartIcon className="h-7 w-7 text-gray-600" />
-                {cartItemCount > 0 && (
-                    <span className="absolute top-0 right-0 bg-secondary text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
-                        {cartItemCount}
-                    </span>
-                )}
-            </button>
-            <button className="hidden md:block bg-primary text-white font-semibold py-2 px-4 rounded-full hover:bg-primary-dark transition-colors duration-300">
-                Sign In
-            </button>
-        </div>
-      </div>
-    </header>
-  );
+const Header: React.FC<HeaderProps> = ({ onSearch, cartItemCount, onOpenCart, onOpenOrderHistory }) => {
+    const [query, setQuery] = useState('');
+
+    const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        onSearch(query);
+    };
+
+    return (
+        <header className="bg-white shadow-md sticky top-0 z-30">
+            <div className="container mx-auto px-4 py-3 flex justify-between items-center">
+                <a href="/" className="flex items-center space-x-2">
+                    <SteamingFoodIcon className="h-8 w-8 text-primary" />
+                    <span className="text-2xl font-bold text-gray-800 tracking-tight">FoodFleet</span>
+                </a>
+
+                <div className="w-full max-w-md hidden md:block">
+                    <form onSubmit={handleSearch} className="relative">
+                        <input 
+                            type="text" 
+                            placeholder="Search for restaurants or dishes..."
+                            value={query}
+                            onChange={(e) => {
+                                setQuery(e.target.value);
+                                if (e.target.value === '') {
+                                    onSearch('');
+                                }
+                            }}
+                            className="w-full px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-light transition-all"
+                        />
+                        <button type="submit" className="absolute right-0 top-0 mt-1.5 mr-3" aria-label="Search">
+                            <SearchIcon className="h-6 w-6 text-gray-400 hover:text-primary" />
+                        </button>
+                    </form>
+                </div>
+
+                <nav className="flex items-center space-x-4">
+                    <button onClick={onOpenOrderHistory} className="text-gray-600 hover:text-primary transition-colors flex items-center space-x-1.5">
+                        <HistoryIcon className="h-6 w-6" />
+                        <span className="hidden lg:inline font-semibold">Orders</span>
+                    </button>
+                    <button onClick={onOpenCart} className="relative text-gray-600 hover:text-primary transition-colors flex items-center space-x-1.5">
+                        <CartIcon className="h-6 w-6" />
+                        <span className="hidden lg:inline font-semibold">Cart</span>
+                        {cartItemCount > 0 && (
+                            <span className="absolute -top-2 -right-2 bg-secondary text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                                {cartItemCount}
+                            </span>
+                        )}
+                    </button>
+                </nav>
+            </div>
+        </header>
+    );
 };
 
 export default Header;

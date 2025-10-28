@@ -1,34 +1,30 @@
 import React from 'react';
-import type { Dish } from '../types';
-import { CloseIcon, TrashIcon, CartIcon } from './IconComponents';
+import type { CartItem, Dish } from '../types';
+import { CloseIcon, TrashIcon, CartIcon, PlusIcon, MinusIcon } from './IconComponents';
 
 interface CartViewProps {
   isOpen: boolean;
   onClose: () => void;
-  cartItems: Dish[];
-  onEmptyCart: () => void;
-  onRemoveItem: (index: number) => void;
-  onCheckout: () => void;
+  cartItems: CartItem[];
+  onPromptEmptyCart: () => void;
+  onIncreaseQuantity: (dish: Dish) => void;
+  onDecreaseQuantity: (dishId: string) => void;
+  onPromptCheckout: () => void;
 }
 
-const CartView: React.FC<CartViewProps> = ({ isOpen, onClose, cartItems, onEmptyCart, onRemoveItem, onCheckout }) => {
-  const subtotal = cartItems.reduce((sum, item) => sum + item.price, 0);
+const CartView: React.FC<CartViewProps> = ({ 
+  isOpen, 
+  onClose, 
+  cartItems, 
+  onPromptEmptyCart, 
+  onIncreaseQuantity, 
+  onDecreaseQuantity, 
+  onPromptCheckout 
+}) => {
+  const subtotal = cartItems.reduce((sum, item) => sum + (item.dish.price * item.quantity), 0);
   const taxesAndFees = subtotal * 0.05; // Placeholder 5% tax
   const deliveryFee = cartItems.length > 0 ? 40.00 : 0; // Placeholder flat fee, 0 if cart is empty
   const total = subtotal + taxesAndFees + deliveryFee;
-
-
-  const handleEmptyCartClick = () => {
-    if (window.confirm('Are you sure you want to empty your cart? This action cannot be undone.')) {
-      onEmptyCart();
-    }
-  };
-
-  const handleCheckoutClick = () => {
-    if (window.confirm('Are you ready to place your order?')) {
-      onCheckout();
-    }
-  };
 
   return (
     <>
@@ -59,22 +55,32 @@ const CartView: React.FC<CartViewProps> = ({ isOpen, onClose, cartItems, onEmpty
               <ul className="space-y-4">
                 {cartItems.map((item, index) => (
                   <li 
-                    key={`${item.id}-${index}`} 
+                    key={`${item.dish.id}-${index}`} 
                     className="flex items-center space-x-4 animate-fadeInUp"
                     style={{ animationDelay: `${index * 60}ms`, animationFillMode: 'backwards' }}
                   >
-                    <img src={item.imageUrl} alt={item.name} className="w-16 h-16 object-cover rounded-md" />
+                    <img src={item.dish.imageUrl} alt={item.dish.name} className="w-16 h-16 object-cover rounded-md" />
                     <div className="flex-grow">
-                      <p className="font-semibold text-gray-800">{item.name}</p>
-                      <p className="text-sm text-gray-500">₹{item.price.toFixed(2)}</p>
+                      <p className="font-semibold text-gray-800">{item.dish.name}</p>
+                      <p className="text-sm text-gray-500">₹{item.dish.price.toFixed(2)}</p>
                     </div>
-                    <button 
-                      onClick={() => onRemoveItem(index)}
-                      className="p-2 rounded-full hover:bg-red-100 transition-colors"
-                      aria-label={`Remove ${item.name} from cart`}
-                    >
-                      <TrashIcon className="h-5 w-5 text-red-500" />
-                    </button>
+                    <div className="flex items-center justify-between bg-white text-primary font-bold shadow-md rounded-md border border-gray-200 text-lg w-[100px]">
+                        <button 
+                            onClick={() => onDecreaseQuantity(item.dish.id)} 
+                            className="px-3 py-1 hover:bg-gray-100 rounded-l-md"
+                            aria-label={`Decrease quantity of ${item.dish.name}`}
+                        >
+                            <MinusIcon className="w-4 h-4" />
+                        </button>
+                        <span className="px-2 text-base">{item.quantity}</span>
+                        <button 
+                            onClick={() => onIncreaseQuantity(item.dish)} 
+                            className="px-3 py-1 hover:bg-gray-100 rounded-r-md"
+                            aria-label={`Increase quantity of ${item.dish.name}`}
+                        >
+                            <PlusIcon className="w-4 h-4" />
+                        </button>
+                    </div>
                   </li>
                 ))}
               </ul>
@@ -109,13 +115,13 @@ const CartView: React.FC<CartViewProps> = ({ isOpen, onClose, cartItems, onEmpty
                     </div>
                 </div>
                 <button 
-                    onClick={handleCheckoutClick}
+                    onClick={onPromptCheckout}
                     className="w-full bg-secondary text-white font-bold py-3 rounded-lg hover:bg-emerald-600 transition-colors mb-2"
                 >
                     Proceed to Checkout
                 </button>
                 <button 
-                    onClick={handleEmptyCartClick}
+                    onClick={onPromptEmptyCart}
                     className="w-full flex items-center justify-center text-sm text-red-600 font-semibold py-2 px-4 rounded-lg hover:bg-red-50 transition-colors"
                 >
                     <TrashIcon className="h-4 w-4 mr-2" />

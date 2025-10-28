@@ -5,6 +5,12 @@ export interface Dish {
   isVeg: boolean;
   description: string;
   imageUrl: string;
+  bestseller?: boolean;
+}
+
+export interface CartItem {
+  dish: Dish;
+  quantity: number;
 }
 
 export interface Restaurant {
@@ -32,7 +38,7 @@ export type OrderStatus = 'Processing' | 'Out for Delivery' | 'Delivered';
 export interface Order {
   id: string;
   date: string; // ISO string
-  items: Dish[];
+  items: CartItem[];
   totalAmount: number;
   status: OrderStatus;
 }
