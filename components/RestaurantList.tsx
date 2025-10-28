@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import type { Restaurant } from '../types';
 import { StarIcon, HeartIcon } from './IconComponents';
 import SkeletonRestaurantCard from './SkeletonRestaurantCard';
@@ -7,6 +8,11 @@ interface RestaurantCardProps {
     restaurant: Restaurant;
     onSelect: (restaurant: Restaurant) => void;
 }
+
+const cardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 },
+};
 
 const RestaurantCard: React.FC<RestaurantCardProps> = ({ restaurant, onSelect }) => {
     const [isFavorite, setIsFavorite] = useState(false);
@@ -17,7 +23,8 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({ restaurant, onSelect })
     };
 
     return (
-        <div 
+        <motion.div
+            variants={cardVariants}
             className="bg-gray-800 rounded-xl overflow-hidden shadow-lg border border-gray-700/50 hover:border-primary/50 hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-1 cursor-pointer group"
             onClick={() => onSelect(restaurant)}
         >
@@ -43,7 +50,7 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({ restaurant, onSelect })
                 <p className="text-sm text-gray-400 truncate">{restaurant.cuisine}</p>
                 <p className="text-sm text-gray-400 truncate">{restaurant.address}</p>
             </div>
-        </div>
+        </motion.div>
     );
 };
 
@@ -54,11 +61,26 @@ interface RestaurantListProps {
   isLoading: boolean;
 }
 
+const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.05
+        }
+    }
+};
+
 const RestaurantList: React.FC<RestaurantListProps> = ({ restaurants, onSelectRestaurant, isLoading }) => {
   return (
     <div>
         <h2 className="text-3xl font-bold text-gray-100 mb-6">Restaurants to explore</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <motion.div 
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+        >
             {isLoading ? (
                 Array.from({ length: 8 }).map((_, index) => <SkeletonRestaurantCard key={index} />)
             ) : restaurants.length > 0 ? (
@@ -70,7 +92,7 @@ const RestaurantList: React.FC<RestaurantListProps> = ({ restaurants, onSelectRe
                     <p className="text-gray-400 text-lg">No restaurants found for your selection.</p>
                 </div>
             )}
-        </div>
+        </motion.div>
     </div>
   );
 };

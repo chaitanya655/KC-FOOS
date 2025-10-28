@@ -19,7 +19,7 @@ export const restaurants: Restaurant[] = [
         "price": 250,
         "isVeg": true,
         "description": "A complete vegetarian platter with rice, sambar, rasam, curries, and dessert.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/chains/4/90004/c2771215a33c709b55f1b1350a41753c.jpg?fit=around|750:500&crop=750:500;*,*",
+        "imageUrl": "https://images.pexels.com/photos/9551327/pexels-photo-9551327.jpeg?auto=compress&cs=tinysrgb&w=800",
         "bestseller": true
       },
       {
@@ -28,7 +28,7 @@ export const restaurants: Restaurant[] = [
         "price": 120,
         "isVeg": true,
         "description": "Zesty lemon-flavored rice tempered with curry leaves and mustard seeds.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/5/19222625/e4854f022134447012354a3e200e5728.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/14537330/pexels-photo-14537330.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       {
         "id": "dish003",
@@ -36,7 +36,7 @@ export const restaurants: Restaurant[] = [
         "price": 110,
         "isVeg": true,
         "description": "Comforting and creamy yogurt rice, a perfect end to any South Indian meal.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/chains/4/90004/041c9b1f8093156c12ce4663b6b19163.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/12949511/pexels-photo-12949511.jpeg?auto=compress&cs=tinysrgb&w=800"
       }
     ]
   },
@@ -58,7 +58,7 @@ export const restaurants: Restaurant[] = [
         "price": 320,
         "isVeg": false,
         "description": "The world-famous aromatic basmati rice cooked with succulent chicken and spices.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/chains/4/90004/b3297a7e875323a6f11e974e403d15a4.jpg?fit=around|750:500&crop=750:500;*,*",
+        "imageUrl": "https://images.pexels.com/photos/12737656/pexels-photo-12737656.jpeg?auto=compress&cs=tinysrgb&w=800",
         "bestseller": true
       },
       {
@@ -67,7 +67,7 @@ export const restaurants: Restaurant[] = [
         "price": 380,
         "isVeg": false,
         "description": "Rich and flavorful biryani with tender mutton pieces, a true royal treat.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/4/90004/d21213915104437e5f3f01c313274291.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/7394236/pexels-photo-7394236.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       {
         "id": "dish006",
@@ -75,7 +75,7 @@ export const restaurants: Restaurant[] = [
         "price": 100,
         "isVeg": true,
         "description": "Soft, fluffy steamed rice cakes served with a flavorful lentil-based vegetable stew.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/5/91635/e4d092233f2c3b28b5a03e1e5e6b77c3.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/5419241/pexels-photo-5419241.jpeg?auto=compress&cs=tinysrgb&w=800"
       }
     ]
   },
@@ -97,7 +97,7 @@ export const restaurants: Restaurant[] = [
         "price": 410,
         "isVeg": false,
         "description": "The classic, aromatic Paradise Mutton Biryani, a feast for the senses.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/chains/4/90004/5f9c57d5440263f101b0f444855f462a.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/18259344/pexels-photo-18259344.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       {
         "id": "dish008",
@@ -105,7 +105,7 @@ export const restaurants: Restaurant[] = [
         "price": 350,
         "isVeg": false,
         "description": "Succulent chicken pieces layered with fragrant basmati rice and cooked to perfection.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/chains/4/90004/f88a4c82823a232b7ae4f2c5d64802c6.jpg?fit=around|750:500&crop=750:500;*,*",
+        "imageUrl": "https://images.pexels.com/photos/10764516/pexels-photo-10764516.jpeg?auto=compress&cs=tinysrgb&w=800",
         "bestseller": true
       },
       {
@@ -114,7 +114,7 @@ export const restaurants: Restaurant[] = [
         "price": 300,
         "isVeg": true,
         "description": "A vegetarian delight with soft paneer cubes in a flavorful biryani masala.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/9/18992029/c09b85c3080b435252b47f078650f9a7.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/16010531/pexels-photo-16010531.jpeg?auto=compress&cs=tinysrgb&w=800"
       }
     ]
   },
@@ -136,7 +136,7 @@ export const restaurants: Restaurant[] = [
         "price": 180,
         "isVeg": true,
         "description": "A crispy dosa smeared with a spicy powder and topped with a generous amount of ghee.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/7/90307/8a646c07a389f4104279090c2e43153c.jpg?fit=around|750:500&crop=750:500;*,*",
+        "imageUrl": "https://images.pexels.com/photos/5560763/pexels-photo-5560763.jpeg?auto=compress&cs=tinysrgb&w=800",
         "bestseller": true
       },
       {
@@ -145,7 +145,7 @@ export const restaurants: Restaurant[] = [
         "price": 120,
         "isVeg": true,
         "description": "Super soft idlis topped with a dollop of white butter and served with chutney.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/chains/7/90307/5443d3cc9b56f8f1a23e9a58b0a1a5b2.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/18946765/pexels-photo-18946765.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       {
         "id": "dish012",
@@ -153,7 +153,7 @@ export const restaurants: Restaurant[] = [
         "price": 190,
         "isVeg": true,
         "description": "A classic Andhra Pesarattu stuffed with delicious upma, a wholesome meal.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/3/93123/255b57f20252873a4a2f8b5065911e25.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/8791557/pexels-photo-8791557.jpeg?auto=compress&cs=tinysrgb&w=800"
       }
     ]
   },
@@ -175,7 +175,7 @@ export const restaurants: Restaurant[] = [
         "price": 280,
         "isVeg": false,
         "description": "A rich and slow-cooked delicacy of meat, lentils, and wheat, a Ramzan specialty.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/3/90183/6b42f6136d812328405b583f608a0d2f.jpg?fit=around|750:500&crop=750:500;*,*",
+        "imageUrl": "https://images.pexels.com/photos/7732049/pexels-photo-7732049.jpeg?auto=compress&cs=tinysrgb&w=800",
         "bestseller": true
       },
       {
@@ -184,7 +184,7 @@ export const restaurants: Restaurant[] = [
         "price": 260,
         "isVeg": false,
         "description": "Spicy, deep-fried chicken bites bursting with flavor from curry leaves and chilies.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/chains/3/90183/2c554909a5676b9f2d334515a133f678.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/8118742/pexels-photo-8118742.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       {
         "id": "dish015",
@@ -192,7 +192,7 @@ export const restaurants: Restaurant[] = [
         "price": 320,
         "isVeg": false,
         "description": "Juicy chicken drumsticks marinated in spices and grilled to perfection in a tandoor.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/3/90183/c90a2a464227301c2776c243fab59a6d.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/6033985/pexels-photo-6033985.jpeg?auto=compress&cs=tinysrgb&w=800"
       }
     ]
   },
@@ -214,7 +214,7 @@ export const restaurants: Restaurant[] = [
         "price": 80,
         "isVeg": true,
         "description": "Strong and aromatic South Indian filter coffee, the perfect pick-me-up.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/chains/0/90110/39732770259fb1432f4a47517c5b3644.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/302896/pexels-photo-302896.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       {
         "id": "dish017",
@@ -222,7 +222,7 @@ export const restaurants: Restaurant[] = [
         "price": 130,
         "isVeg": true,
         "description": "Fluffy, deep-fried bread served with a savory and mildly spiced potato curry.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/0/90110/b1c31e67b226e632d201314643324f60.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/14883477/pexels-photo-14883477.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       {
         "id": "dish018",
@@ -230,7 +230,7 @@ export const restaurants: Restaurant[] = [
         "price": 140,
         "isVeg": true,
         "description": "Crispy patties made from mixed vegetables, served with mint chutney.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/chains/0/90110/e16f1c4293f436d4f9f743a14441b80c.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/13529731/pexels-photo-13529731.jpeg?auto=compress&cs=tinysrgb&w=800"
       }
     ]
   },
@@ -252,7 +252,7 @@ export const restaurants: Restaurant[] = [
         "price": 300,
         "isVeg": false,
         "description": "Award-winning Haleem known for its authentic taste and rich texture.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/3/90183/6b42f6136d812328405b583f608a0d2f.jpg?fit=around|750:500&crop=750:500;*,*",
+        "imageUrl": "https://images.pexels.com/photos/9558897/pexels-photo-9558897.jpeg?auto=compress&cs=tinysrgb&w=800",
         "bestseller": true
       },
       {
@@ -261,7 +261,7 @@ export const restaurants: Restaurant[] = [
         "price": 390,
         "isVeg": false,
         "description": "A royal biryani infused with the delicate aroma and flavor of saffron.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/chains/8/90188/833777f98e2985390c29f4b301c36069.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/17650143/pexels-photo-17650143/free-photo-of-biryani-with-saffron-and-egg.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       {
         "id": "dish021",
@@ -269,7 +269,7 @@ export const restaurants: Restaurant[] = [
         "price": 150,
         "isVeg": true,
         "description": "A decadent Hyderabadi bread pudding dessert soaked in saffron-infused milk.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/3/90183/6d8c0e2581691316b1e6a12b902f5c71.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/13432328/pexels-photo-13432328.jpeg?auto=compress&cs=tinysrgb&w=800"
       }
     ]
   },
@@ -291,7 +291,7 @@ export const restaurants: Restaurant[] = [
         "price": 280,
         "isVeg": true,
         "description": "Soft paneer cubes simmered in a rich, creamy, and buttery tomato gravy.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/9/90319/bd39775f426c518e0a307061d4a04d2b.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/4049137/pexels-photo-4049137.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       {
         "id": "dish023",
@@ -299,7 +299,7 @@ export const restaurants: Restaurant[] = [
         "price": 220,
         "isVeg": true,
         "description": "A fragrant one-pot rice dish made with mixed vegetables and aromatic spices.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/9/90319/d5138f654b087093d56f1ad1d47a4659.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/11304724/pexels-photo-11304724.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       {
         "id": "dish024",
@@ -307,7 +307,7 @@ export const restaurants: Restaurant[] = [
         "price": 60,
         "isVeg": true,
         "description": "Soft and fluffy leavened bread cooked in a tandoor and slathered with butter.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/9/90319/5a9c148a4365c192c7336d33010b953a.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/9609842/pexels-photo-9609842.jpeg?auto=compress&cs=tinysrgb&w=800"
       }
     ]
   },
@@ -329,7 +329,7 @@ export const restaurants: Restaurant[] = [
         "price": 400,
         "isVeg": true,
         "description": "An all-you-can-eat spread featuring a wide variety of starters, main courses, and desserts.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/1/92061/a348398b584a56a643597d288d2281b3.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/3220617/pexels-photo-3220617.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       {
         "id": "dish026",
@@ -337,7 +337,7 @@ export const restaurants: Restaurant[] = [
         "price": 290,
         "isVeg": true,
         "description": "Cubes of paneer marinated in spices and grilled in a tandoor.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/1/92061/52e50587a8f10826ab562c5c938a16c7.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/9609835/pexels-photo-9609835.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       {
         "id": "dish027",
@@ -345,7 +345,7 @@ export const restaurants: Restaurant[] = [
         "price": 150,
         "isVeg": true,
         "description": "A popular chaat item with crispy puris filled with potatoes, chutneys, and yogurt.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/1/92061/e61d87e07d3588265a04c5539f018d9f.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/15949666/pexels-photo-15949666/free-photo-of-indian-dahi-puri-snack.jpeg?auto=compress&cs=tinysrgb&w=800"
       }
     ]
   },
@@ -367,7 +367,7 @@ export const restaurants: Restaurant[] = [
         "price": 360,
         "isVeg": false,
         "description": "A spicy country chicken curry, a signature dish of Rayalaseema.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/chains/4/90294/f7c166d333066804d80424578b8a4a58.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/5741152/pexels-photo-5741152.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       {
         "id": "dish029",
@@ -375,7 +375,7 @@ export const restaurants: Restaurant[] = [
         "price": 180,
         "isVeg": true,
         "description": "Healthy and nutritious finger millet balls, a traditional staple served with curry.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/chains/4/90294/9f27c216259021e105e468cf5b2d718e.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/8791557/pexels-photo-8791557.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       {
         "id": "dish030",
@@ -383,7 +383,7 @@ export const restaurants: Restaurant[] = [
         "price": 420,
         "isVeg": false,
         "description": "A tangy and spicy delicacy where tender mutton is cooked with sour sorrel leaves.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/chains/4/90294/44428489f41757833a69894411135cce.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/18817757/pexels-photo-18817757/free-photo-of-mutton-curry-with-rice.jpeg?auto=compress&cs=tinysrgb&w=800"
       }
     ]
   },
@@ -405,7 +405,7 @@ export const restaurants: Restaurant[] = [
         "price": 350,
         "isVeg": true,
         "description": "Classic Neapolitan pizza with San Marzano tomatoes, fresh mozzarella, basil, and olive oil.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/3/20127523/84102d515a201c90f854619d4b971a6e.jpg?fit=around|750:500&crop=750:500;*,*",
+        "imageUrl": "https://images.pexels.com/photos/2147491/pexels-photo-2147491.jpeg?auto=compress&cs=tinysrgb&w=800",
         "bestseller": true
       },
       {
@@ -414,7 +414,7 @@ export const restaurants: Restaurant[] = [
         "price": 450,
         "isVeg": false,
         "description": "A crowd-pleaser topped with spicy pepperoni slices and mozzarella cheese.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/3/20127523/18256111f1fdb1683447c20c061730da.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/1166120/pexels-photo-1166120.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       {
         "id": "dish033",
@@ -422,7 +422,7 @@ export const restaurants: Restaurant[] = [
         "price": 220,
         "isVeg": true,
         "description": "Toasted French bread with garlic butter, herbs, and melted mozzarella.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/3/20127523/e8064d8583487a55018693c042125f4d.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/2741457/pexels-photo-2741457.jpeg?auto=compress&cs=tinysrgb&w=800"
       }
     ]
   },
@@ -444,7 +444,7 @@ export const restaurants: Restaurant[] = [
         "price": 280,
         "isVeg": false,
         "description": "Stir-fried noodles with chicken, vegetables, and a savory soy sauce blend.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/3/19137453/43b7496c8038f4f2c0692795f9e2e6c4.jpg?fit=around|750:500&crop=750:500;*,*",
+        "imageUrl": "https://images.pexels.com/photos/2347311/pexels-photo-2347311.jpeg?auto=compress&cs=tinysrgb&w=800",
         "bestseller": true
       },
       {
@@ -453,7 +453,7 @@ export const restaurants: Restaurant[] = [
         "price": 260,
         "isVeg": true,
         "description": "Batter-fried paneer tossed in a spicy and tangy chilli sauce.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/3/19137453/4a5a549646b5d92f767a1f592395a329.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/9609848/pexels-photo-9609848.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       {
         "id": "dish036",
@@ -461,14 +461,14 @@ export const restaurants: Restaurant[] = [
         "price": 200,
         "isVeg": true,
         "description": "Crispy fried rolls stuffed with a delicious mix of vegetables.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/3/19137453/26b911767425f381395f87b897918f6f.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/4049130/pexels-photo-4049130.jpeg?auto=compress&cs=tinysrgb&w=800"
       }
     ]
   },
   {
     "id": "rest013",
     "name": "The Chocolate Room",
-    "imageUrl": "https://images.pexels.com/photos/367308/pexels-photo-367308.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "imageUrl": "https://images.pexels.com/photos/291528/pexels-photo-291528.jpeg?auto=compress&cs=tinysrgb&w=800",
     "rating": 4.6,
     "description": "A paradise for chocolate lovers with a decadent menu of desserts and shakes.",
     "isVeg": true,
@@ -483,7 +483,7 @@ export const restaurants: Restaurant[] = [
         "price": 250,
         "isVeg": true,
         "description": "Warm chocolate cake with a gooey, molten chocolate center, served with vanilla ice cream.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/0/90830/23d72a75cdb459c55d045a198c61e06c.jpg?fit=around|750:500&crop=750:500;*,*",
+        "imageUrl": "https://images.pexels.com/photos/4109943/pexels-photo-4109943.jpeg?auto=compress&cs=tinysrgb&w=800",
         "bestseller": true
       },
       {
@@ -492,7 +492,7 @@ export const restaurants: Restaurant[] = [
         "price": 280,
         "isVeg": true,
         "description": "Crispy waffles topped with chocolate sauce, whipped cream, and fresh fruits.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/0/90830/6902500c6d2dd0a514d7c2a74c2e21b7.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/7936171/pexels-photo-7936171.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       {
         "id": "dish039",
@@ -500,7 +500,7 @@ export const restaurants: Restaurant[] = [
         "price": 230,
         "isVeg": true,
         "description": "A thick and creamy milkshake blended with Kit Kat chocolate bars.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/0/90830/28f7fc33481b21901c80f4f9f1b4020a.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/5946970/pexels-photo-5946970.jpeg?auto=compress&cs=tinysrgb&w=800"
       }
     ]
   },
@@ -522,7 +522,7 @@ export const restaurants: Restaurant[] = [
         "price": 320,
         "isVeg": true,
         "description": "A nutritious bowl of quinoa, mixed greens, chickpeas, and a lemon vinaigrette dressing.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/6/18607906/0b8e92f256a420456e3c15379b9a671f.jpg?fit=around|750:500&crop=750:500;*,*",
+        "imageUrl": "https://images.pexels.com/photos/1211887/pexels-photo-1211887.jpeg?auto=compress&cs=tinysrgb&w=800",
         "bestseller": true
       },
       {
@@ -531,7 +531,7 @@ export const restaurants: Restaurant[] = [
         "price": 380,
         "isVeg": false,
         "description": "Tender grilled chicken breast on a bed of lettuce, cherry tomatoes, and cucumbers.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/6/18607906/7d2a33f377501a357f892ce01d36c2e3.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/2097090/pexels-photo-2097090.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       {
         "id": "dish042",
@@ -539,7 +539,7 @@ export const restaurants: Restaurant[] = [
         "price": 180,
         "isVeg": true,
         "description": "A refreshing blend of spinach, cucumber, green apple, and ginger.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/6/18607906/a274577f8671b7858c2f1f53e3d2c161.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/338713/pexels-photo-338713.jpeg?auto=compress&cs=tinysrgb&w=800"
       }
     ]
   },
@@ -561,7 +561,7 @@ export const restaurants: Restaurant[] = [
         "price": 450,
         "isVeg": false,
         "description": "Classic tandoori chicken simmered in a creamy tomato and butter gravy.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/chains/4/18442844/df82a1e80922f98f731154c1851e2c60.jpg?fit=around|750:500&crop=750:500;*,*",
+        "imageUrl": "https://images.pexels.com/photos/2679501/pexels-photo-2679501.jpeg?auto=compress&cs=tinysrgb&w=800",
         "bestseller": true
       },
       {
@@ -570,7 +570,7 @@ export const restaurants: Restaurant[] = [
         "price": 350,
         "isVeg": true,
         "description": "Black lentils slow-cooked overnight with butter and cream for a rich flavor.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/chains/4/18442844/7821c607f2b1c09939e44d375a071060.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/4552046/pexels-photo-4552046.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       {
         "id": "dish045",
@@ -578,7 +578,7 @@ export const restaurants: Restaurant[] = [
         "price": 90,
         "isVeg": true,
         "description": "Soft, fluffy naan bread topped with chopped garlic and butter.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/chains/4/18442844/89b14041b6cde29ab26e0339a04a5c92.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/13814644/pexels-photo-13814644.jpeg?auto=compress&cs=tinysrgb&w=800"
       }
     ]
   },
@@ -600,7 +600,7 @@ export const restaurants: Restaurant[] = [
         "price": 100,
         "isVeg": true,
         "description": "Crushed samosas topped with yogurt, tamarind chutney, and spices.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/2/90212/8c353f4d76a5b6f3b063d80b6281729c.jpg?fit=around|750:500&crop=750:500;*,*",
+        "imageUrl": "https://images.pexels.com/photos/8992923/pexels-photo-8992923.jpeg?auto=compress&cs=tinysrgb&w=800",
         "bestseller": true
       },
       {
@@ -609,7 +609,7 @@ export const restaurants: Restaurant[] = [
         "price": 80,
         "isVeg": true,
         "description": "Crispy hollow puris filled with spicy tangy water, potatoes, and chickpeas.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/2/90212/28d712f8a846f49a59b8543788734914.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/3926124/pexels-photo-3926124.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       {
         "id": "dish048",
@@ -617,7 +617,7 @@ export const restaurants: Restaurant[] = [
         "price": 150,
         "isVeg": true,
         "description": "A spicy mash of mixed vegetables served with soft, buttered pav bread.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/2/90212/82676a6e5509743c33d4ef83c483b8b1.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/5520141/pexels-photo-5520141.jpeg?auto=compress&cs=tinysrgb&w=800"
       }
     ]
   },
@@ -639,7 +639,7 @@ export const restaurants: Restaurant[] = [
         "price": 699,
         "isVeg": false,
         "description": "A curated box of assorted grilled meats, prawns, and starters.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/3/18165783/39906d20353c7c7f9984d72836220556.jpg?fit=around|750:500&crop=750:500;*,*",
+        "imageUrl": "https://images.pexels.com/photos/6210884/pexels-photo-6210884.jpeg?auto=compress&cs=tinysrgb&w=800",
         "bestseller": true
       },
       {
@@ -648,7 +648,7 @@ export const restaurants: Restaurant[] = [
         "price": 550,
         "isVeg": false,
         "description": "Juicy prawns marinated in tandoori spices and grilled to perfection.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/3/18165783/4df30b4f2c5be1e0586f14b69389f46b.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/10372439/pexels-photo-10372439.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       {
         "id": "dish051",
@@ -656,7 +656,7 @@ export const restaurants: Restaurant[] = [
         "price": 250,
         "isVeg": true,
         "description": "Smoky and sweet grilled pineapple slices with a hint of cinnamon.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/3/18165783/b282bc746c3b6d21d516d0042459021e.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/1211899/pexels-photo-1211899.jpeg?auto=compress&cs=tinysrgb&w=800"
       }
     ]
   },
@@ -678,7 +678,7 @@ export const restaurants: Restaurant[] = [
         "price": 220,
         "isVeg": true,
         "description": "A chocolate lover's dream with chocolate ice cream, choco chips, and fudge.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/chains/4/90204/a30c5e7b5f4705a6983086961fb0324b.jpg?fit=around|750:500&crop=750:500;*,*",
+        "imageUrl": "https://images.pexels.com/photos/1362534/pexels-photo-1362534.jpeg?auto=compress&cs=tinysrgb&w=800",
         "bestseller": true
       },
       {
@@ -687,7 +687,7 @@ export const restaurants: Restaurant[] = [
         "price": 240,
         "isVeg": true,
         "description": "Caramel and butterscotch ice cream mixed with roasted almonds and cashews.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/chains/4/90204/07b5a5b51336c5332f17849175d0b985.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/1082344/pexels-photo-1082344.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       {
         "id": "dish054",
@@ -695,7 +695,7 @@ export const restaurants: Restaurant[] = [
         "price": 260,
         "isVeg": true,
         "description": "Vanilla ice cream blended with fresh seasonal fruits like apple, kiwi, and litchi.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/chains/4/90204/2491a27c0017fc80e30d1c072b2204c3.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/3727250/pexels-photo-3727250.jpeg?auto=compress&cs=tinysrgb&w=800"
       }
     ]
   },
@@ -717,7 +717,7 @@ export const restaurants: Restaurant[] = [
         "price": 280,
         "isVeg": false,
         "description": "A succulent grilled chicken patty with lettuce, tomatoes, and a special sauce.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/8/19515918/d5b5f4d1f3b23e7e22e9e623c21a1f0a.jpg?fit=around|750:500&crop=750:500;*,*",
+        "imageUrl": "https://images.pexels.com/photos/1199957/pexels-photo-1199957.jpeg?auto=compress&cs=tinysrgb&w=800",
         "bestseller": true
       },
       {
@@ -726,7 +726,7 @@ export const restaurants: Restaurant[] = [
         "price": 240,
         "isVeg": true,
         "description": "A crispy vegetable patty with a spicy mayo, onions, and jalapenos.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/8/19515918/395bb5b11202e8c253b216c59d95f414.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/2271107/pexels-photo-2271107.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       {
         "id": "dish057",
@@ -734,7 +734,7 @@ export const restaurants: Restaurant[] = [
         "price": 150,
         "isVeg": true,
         "description": "Classic french fries tossed in a fiery peri peri spice mix.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/8/19515918/5980a37e42d2a45d064506371c6f44d8.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/1583884/pexels-photo-1583884.jpeg?auto=compress&cs=tinysrgb&w=800"
       }
     ]
   },
@@ -756,7 +756,7 @@ export const restaurants: Restaurant[] = [
         "price": 350,
         "isVeg": false,
         "description": "Minced mutton blended with spices, skewered, and grilled to perfection.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/1/90171/598687259f9720b7596c342733a1e261.jpg?fit=around|750:500&crop=750:500;*,*",
+        "imageUrl": "https://images.pexels.com/photos/410648/pexels-photo-410648.jpeg?auto=compress&cs=tinysrgb&w=800",
         "bestseller": true
       },
       {
@@ -765,7 +765,7 @@ export const restaurants: Restaurant[] = [
         "price": 400,
         "isVeg": false,
         "description": "Spicy, pan-fried mutton pieces, a classic Hyderabadi appetizer.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/1/90171/b21b72a4e2373ed09869502b1f813c9e.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/18817757/pexels-photo-18817757/free-photo-of-mutton-curry-with-rice.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       {
         "id": "dish060",
@@ -773,7 +773,46 @@ export const restaurants: Restaurant[] = [
         "price": 180,
         "isVeg": true,
         "description": "A traditional Hyderabadi dessert made from dried apricots, served with cream.",
-        "imageUrl": "https://b.zmtcdn.com/data/pictures/1/90171/34d31e9c2c62a8c3e800a747c34b6b55.jpg?fit=around|750:500&crop=750:500;*,*"
+        "imageUrl": "https://images.pexels.com/photos/13432328/pexels-photo-13432328.jpeg?auto=compress&cs=tinysrgb&w=800"
+      }
+    ]
+  },
+  {
+    "id": "rest021",
+    "name": "Pasta Palace & Pizzeria",
+    "imageUrl": "https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "rating": 4.4,
+    "description": "Authentic Italian pasta and classic pizzas in a cozy setting.",
+    "isVeg": false,
+    "address": "Banjara Hills",
+    "cuisine": "Italian, Pasta, Pizza",
+    "deliveryTime": "35-40 mins",
+    "offer": "COMBO DEALS",
+    "dishes": [
+      {
+        "id": "dish061",
+        "name": "Spaghetti Carbonara",
+        "price": 380,
+        "isVeg": false,
+        "description": "Classic carbonara with pancetta, egg yolk, and pecorino cheese.",
+        "imageUrl": "https://images.pexels.com/photos/1487511/pexels-photo-1487511.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "bestseller": true
+      },
+      {
+        "id": "dish062",
+        "name": "Pesto Penne",
+        "price": 340,
+        "isVeg": true,
+        "description": "Penne pasta tossed in a fresh basil pesto sauce with cherry tomatoes.",
+        "imageUrl": "https://images.pexels.com/photos/1256875/pexels-photo-1256875.jpeg?auto=compress&cs=tinysrgb&w=800"
+      },
+      {
+        "id": "dish063",
+        "name": "Tiramisu",
+        "price": 250,
+        "isVeg": true,
+        "description": "Classic Italian coffee-flavored dessert with ladyfingers and mascarpone.",
+        "imageUrl": "https://images.pexels.com/photos/3727255/pexels-photo-3727255.jpeg?auto=compress&cs=tinysrgb&w=800"
       }
     ]
   }

@@ -1,136 +1,92 @@
 
-import React, { useState } from 'react';
-// Fix: Import OrderStatus type
-import type { Order, OrderStatus, CartItem } from '../types';
-import { CloseIcon, HistoryIcon, ChevronDownIcon } from './IconComponents';
+import React from 'react';
+import type { Order, CartItem } from '../types';
+import { CloseIcon, HistoryIcon } from './IconComponents';
 
 interface OrderHistoryProps {
-  isOpen: boolean;
-  onClose: () => void;
   orders: Order[];
-  // Fix: Use OrderStatus type for onUpdateStatus prop
-  onUpdateStatus: (orderId: string, status: OrderStatus) => void;
+  onClose: () => void;
+  onReorder: (items: CartItem[]) => void;
+  onTrackOrder: (order: Order) => void;
 }
 
-// Fix: Add type for statusColors
-const statusColors: Record<OrderStatus, string> = {
-  Processing: 'bg-yellow-900/50 text-yellow-300',
-  'Out for Delivery': 'bg-blue-900/50 text-blue-300',
-  Delivered: 'bg-green-900/50 text-green-300',
-};
-
-const OrderHistory: React.FC<OrderHistoryProps> = ({ isOpen, onClose, orders, onUpdateStatus }) => {
-  const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
-
-  const handleToggle = (orderId: string) => {
-    setExpandedOrderId(prevId => (prevId === orderId ? null : orderId));
-  };
-
+const OrderHistory: React.FC<OrderHistoryProps> = ({ orders, onClose, onReorder, onTrackOrder }) => {
   return (
-    <>
-      {/* Overlay */}
-      <div
-        className={`fixed inset-0 bg-black/70 z-40 transition-opacity duration-300 ${
-          isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
-        }`}
-        onClick={onClose}
-      ></div>
-
-      {/* History Panel */}
-      <div
-        className={`fixed top-0 right-0 h-full w-full max-w-md bg-gray-800 text-gray-100 shadow-2xl z-50 transform transition-transform duration-300 ease-in-out ${
-          isOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
+    <div className="fixed inset-0 bg-black/70 z-40 flex justify-center items-center animate-fadeIn" onClick={onClose}>
+      <div 
+        className="bg-gray-800 text-gray-100 w-full max-w-2xl h-[90vh] rounded-2xl shadow-2xl flex flex-col" 
+        onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex flex-col h-full">
-          <header className="flex items-center justify-between p-4 border-b border-gray-700">
+        <header className="flex items-center justify-between p-4 border-b border-gray-700">
+          <div className="flex items-center space-x-3">
+            <HistoryIcon className="h-7 w-7 text-primary"/>
             <h2 className="text-2xl font-bold text-gray-100">Order History</h2>
-            <button onClick={onClose} className="p-2 rounded-full hover:bg-gray-700 transition-colors">
-              <CloseIcon className="h-6 w-6 text-gray-300" />
-            </button>
-          </header>
-
-          <div className="flex-grow overflow-y-auto p-4 bg-gray-900">
-            {orders.length > 0 ? (
-              <ul className="space-y-3">
-                {orders.slice().reverse().map((order, index) => {
-                  const isExpanded = expandedOrderId === order.id;
-                  const currentStatus = order.status || 'Processing';
-                  return (
-                    <li
-                      key={order.id}
-                      className="bg-gray-800 rounded-lg border border-gray-700 shadow-sm animate-fadeInUp overflow-hidden"
-                      style={{ animationDelay: `${index * 60}ms`, animationFillMode: 'backwards' }}
-                    >
-                      <button
-                        onClick={() => handleToggle(order.id)}
-                        className="w-full p-4 text-left hover:bg-gray-700/50 transition-colors"
-                        aria-expanded={isExpanded}
-                      >
-                        <div className="flex justify-between items-center">
-                          <div>
-                            <p className="font-bold text-gray-100">Order #{order.id.slice(-6)}</p>
-                            <p className="text-sm text-gray-400">{new Date(order.date).toLocaleString()}</p>
-                          </div>
-                          <div className="flex items-center space-x-4">
-                            <span className="font-bold text-lg text-primary">₹{order.totalAmount.toFixed(2)}</span>
-                            <ChevronDownIcon className={`h-5 w-5 text-gray-400 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
-                          </div>
-                        </div>
-                        <div className="mt-2 text-left">
-                            <span className={`px-2 py-1 rounded-full text-xs font-semibold ${statusColors[currentStatus]}`}>
-                                {currentStatus}
-                            </span>
-                        </div>
-                      </button>
-
-                      <div className={`grid transition-[grid-template-rows] duration-300 ease-in-out ${isExpanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
-                        <div className="overflow-hidden">
-                          <div className="px-4 pb-4 pt-3 border-t border-gray-700">
-                            <p className="text-sm font-semibold text-gray-200 mb-2">Items Ordered:</p>
-                            <ul className="space-y-1 text-sm text-gray-300 mb-4">
-                                {order.items.map((item, itemIndex) => (
-                                    <li key={`${item.dish.id}-${itemIndex}`} className="flex justify-between">
-                                        <span>{item.quantity} x {item.dish.name}</span>
-                                        <span>₹{(item.dish.price * item.quantity).toFixed(2)}</span>
-                                    </li>
-                                ))}
-                            </ul>
-                            <div className="mt-4">
-                              <label htmlFor={`status-${order.id}`} className="block text-sm font-medium text-gray-200 mb-1">
-                                Update Status
-                              </label>
-                              <select
-                                id={`status-${order.id}`}
-                                value={currentStatus}
-                                // Fix: use OrderStatus type cast instead of any
-                                onChange={(e) => onUpdateStatus(order.id, e.target.value as OrderStatus)}
-                                onClick={(e) => e.stopPropagation()} // Prevent closing the accordion
-                                className="w-full bg-gray-700 text-gray-200 border-gray-600 rounded-md shadow-sm focus:border-primary-light focus:ring focus:ring-primary-light focus:ring-opacity-50 text-sm py-2 px-3"
-                              >
-                                <option value="Processing">Processing</option>
-                                <option value="Out for Delivery">Out for Delivery</option>
-                                <option value="Delivered">Delivered</option>
-                              </select>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                  );
-                })}
-              </ul>
-            ) : (
-              <div className="flex flex-col items-center justify-center h-full text-center text-gray-400 animate-fadeInUp">
-                <HistoryIcon className="h-16 w-16 text-gray-600 mb-4" />
-                <p className="text-lg font-semibold">No past orders</p>
-                <p>Your previous orders will appear here.</p>
-              </div>
-            )}
           </div>
+          <button onClick={onClose} className="p-2 rounded-full hover:bg-gray-700 transition-colors">
+            <CloseIcon className="h-6 w-6 text-gray-300" />
+          </button>
+        </header>
+
+        <div className="flex-grow overflow-y-auto p-6">
+          {orders.length > 0 ? (
+            <div className="space-y-6">
+              {[...orders].reverse().map(order => (
+                <div key={order.id} className="bg-gray-900/50 p-4 rounded-lg border border-gray-700">
+                  <div className="flex justify-between items-start mb-3">
+                    <div>
+                      <p className="font-bold text-lg text-white">Order #{order.id.slice(-6)}</p>
+                      <p className="text-sm text-gray-400">{order.date}</p>
+                    </div>
+                    <div className={`px-3 py-1 text-xs font-bold rounded-full ${
+                      order.status === 'Delivered' ? 'bg-green-500/20 text-green-400' : 
+                      order.status === 'Out for Delivery' ? 'bg-yellow-500/20 text-yellow-400' : 'bg-blue-500/20 text-blue-400'
+                    }`}>
+                      {order.status}
+                    </div>
+                  </div>
+                  <div className="space-y-2 mb-4">
+                    {order.items.map(item => (
+                      <div key={item.dish.id} className="flex justify-between items-center text-sm">
+                        <span className="text-gray-300">{item.dish.name} &times; {item.quantity}</span>
+                        <span className="text-gray-400">₹{(item.dish.price * item.quantity).toFixed(2)}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="border-t border-gray-700 pt-3">
+                    <div className="flex justify-between items-center font-bold text-white mb-4">
+                      <span>Total Paid</span>
+                      <span>₹{order.totalAmount.toFixed(2)}</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                        <button 
+                            onClick={() => onReorder(order.items)}
+                            className="flex-1 bg-primary text-white font-bold py-2 px-4 rounded-md hover:bg-primary-dark transition-colors text-sm"
+                        >
+                            Reorder
+                        </button>
+                        {order.status !== 'Delivered' && (
+                            <button 
+                                onClick={() => onTrackOrder(order)}
+                                className="flex-1 bg-gray-600 text-white font-bold py-2 px-4 rounded-md hover:bg-gray-500 transition-colors text-sm"
+                            >
+                                Track Order
+                            </button>
+                        )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center h-full text-center text-gray-400">
+              <HistoryIcon className="h-16 w-16 text-gray-600 mb-4" />
+              <p className="text-lg font-semibold">No past orders</p>
+              <p>Your order history will appear here.</p>
+            </div>
+          )}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

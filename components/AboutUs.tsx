@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 const AboutUs: React.FC<{onClose: () => void}> = ({ onClose }) => {
@@ -8,9 +7,9 @@ const AboutUs: React.FC<{onClose: () => void}> = ({ onClose }) => {
                 className="bg-gray-800 text-gray-200 rounded-lg p-8 m-4 max-w-2xl w-full"
                 onClick={(e) => e.stopPropagation()}
             >
-                <h2 className="text-2xl font-bold mb-4">About KC FOOD</h2>
+                <h2 className="text-2xl font-bold mb-4">About KC FOODS</h2>
                 <p className="text-gray-300 mb-4">
-                    KC FOOD is a fictional food delivery service created to demonstrate a modern web application built with React, TypeScript, and Tailwind CSS. 
+                    KC FOODS is a fictional food delivery service created to demonstrate a modern web application built with React, TypeScript, and Tailwind CSS. 
                 </p>
                 <p className="text-gray-300">
                     The goal is to provide a seamless and enjoyable user experience for ordering food online. All data is for demonstration purposes only.
