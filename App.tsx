@@ -1,352 +1,312 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
+
+// Data
+import { restaurants as allRestaurantsData } from './data/db';
+import { categories } from './data/categories';
+
+// Components
 import Header from './components/Header';
 import Footer from './components/Footer';
+import FoodCategoryFilter from './components/FoodCategoryFilter';
 import RestaurantList from './components/RestaurantList';
 import RestaurantDetail from './components/RestaurantDetail';
 import CartView from './components/CartView';
 import OrderHistory from './components/OrderHistory';
-import FoodCategoryFilter from './components/FoodCategoryFilter';
-import SkeletonRestaurantCard from './components/SkeletonRestaurantCard';
 import BackToTopButton from './components/BackToTopButton';
 import ToastContainer from './components/ToastContainer';
 import ConfirmationDialog from './components/ConfirmationDialog';
-import { restaurants as allRestaurants } from './data/db';
-import { categories as allCategories } from './data/categories';
-import type { Restaurant, Dish, Order, OrderStatus, CartItem } from './types';
+import AboutUs from './components/AboutUs';
+import SplashScreen from './components/SplashScreen';
+import AuthPage from './components/AuthPage';
+import ProfilePage from './components/ProfilePage';
 
-interface Toast {
-  id: number;
-  message: string;
-  type: 'success' | 'error';
+// Types
+import type { Restaurant, Dish, CartItem, Order, OrderStatus, User } from './types';
+
+// Custom hook for local storage
+function useLocalStorage<T>(key: string, initialValue: T): [T, React.Dispatch<React.SetStateAction<T>>] {
+  const [storedValue, setStoredValue] = useState<T>(() => {
+    try {
+      const item = window.localStorage.getItem(key);
+      return item ? JSON.parse(item) : initialValue;
+    } catch (error) {
+      console.error(error);
+      return initialValue;
+    }
+  });
+
+  const setValue = (value: T | ((val: T) => T)) => {
+    try {
+      const valueToStore = value instanceof Function ? value(storedValue) : value;
+      setStoredValue(valueToStore);
+      window.localStorage.setItem(key, JSON.stringify(valueToStore));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  return [storedValue, setValue];
 }
 
+
 const App: React.FC = () => {
-    const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
-    const [filteredRestaurants, setFilteredRestaurants] = useState<Restaurant[]>([]);
-    const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
-    const [cartItems, setCartItems] = useState<CartItem[]>(() => {
-        try {
-            const savedCart = localStorage.getItem('cartItems');
-            return savedCart ? JSON.parse(savedCart) : [];
-        } catch (error) {
-            return [];
-        }
+  // Authentication & User State
+  const [user, setUser] = useLocalStorage<User | null>('user', null);
+  const [showProfile, setShowProfile] = useState(false);
+
+  // App Loading State
+  const [isAppLoading, setIsAppLoading] = useState(true);
+  const [isRestaurantsLoading, setIsRestaurantsLoading] = useState(true);
+
+  // Data State
+  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
+  const [filteredRestaurants, setFilteredRestaurants] = useState<Restaurant[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState('all');
+
+  // UI State
+  const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+  const [isAboutUsOpen, setIsAboutUsOpen] = useState(false);
+  const [showBackToTop, setShowBackToTop] = useState(false);
+  
+  // Cart & Order State
+  const [cartItems, setCartItems] = useLocalStorage<CartItem[]>('cartItems', []);
+  const [orders, setOrders] = useLocalStorage<Order[]>('orders', []);
+  
+  // Toast Notifications
+  const [toasts, setToasts] = useState<{id: number, message: string, type: 'success' | 'error'}[]>([]);
+
+  // Confirmation Dialog
+  const [confirmation, setConfirmation] = useState<{ title: string; message: string; onConfirm: () => void; confirmText?: string } | null>(null);
+
+  // --- Effects ---
+
+  // Initial load effect
+  useEffect(() => {
+    const splashTimer = setTimeout(() => setIsAppLoading(false), 1500);
+    const dataTimer = setTimeout(() => {
+        setRestaurants(allRestaurantsData);
+        setFilteredRestaurants(allRestaurantsData);
+        setIsRestaurantsLoading(false);
+    }, 1000);
+
+    return () => {
+      clearTimeout(splashTimer);
+      clearTimeout(dataTimer);
+    };
+  }, []);
+
+  // Scroll listener for back-to-top button
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowBackToTop(window.scrollY > 300);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+  
+  // Filter restaurants when category changes
+  useEffect(() => {
+    setIsRestaurantsLoading(true);
+    const timer = setTimeout(() => {
+      if (selectedCategory === 'all') {
+        setFilteredRestaurants(restaurants);
+      } else {
+        const filtered = restaurants.filter(r => 
+          r.cuisine.toLowerCase().includes(selectedCategory.toLowerCase()) ||
+          r.dishes.some(d => d.name.toLowerCase().includes(selectedCategory.toLowerCase()))
+        );
+        setFilteredRestaurants(filtered);
+      }
+      setIsRestaurantsLoading(false);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [selectedCategory, restaurants]);
+
+
+  // --- Handlers ---
+  
+  const addToast = (message: string, type: 'success' | 'error' = 'success') => {
+    const id = Date.now();
+    setToasts(prev => [...prev, { id, message, type }]);
+    setTimeout(() => {
+      setToasts(currentToasts => currentToasts.filter(t => t.id !== id));
+    }, 3000);
+  };
+  
+  // Cart handlers
+  const handleIncreaseQuantity = (dish: Dish) => {
+    setCartItems(prevItems => {
+      const itemExists = prevItems.find(item => item.dish.id === dish.id);
+      if (itemExists) {
+        return prevItems.map(item =>
+          item.dish.id === dish.id ? { ...item, quantity: item.quantity + 1 } : item
+        );
+      }
+      return [...prevItems, { dish, quantity: 1 }];
     });
-    const [isCartOpen, setIsCartOpen] = useState(false);
-    const [orders, setOrders] = useState<Order[]>(() => {
-        try {
-            const savedOrders = localStorage.getItem('orders');
-            return savedOrders ? JSON.parse(savedOrders) : [];
-        } catch (error) {
-            return [];
-        }
+    addToast(`${dish.name} added to cart`);
+  };
+
+  const handleDecreaseQuantity = (dishId: string) => {
+    setCartItems(prevItems => {
+      const item = prevItems.find(item => item.dish.id === dishId);
+      if (item && item.quantity > 1) {
+        return prevItems.map(i =>
+          i.dish.id === dishId ? { ...i, quantity: i.quantity - 1 } : i
+        );
+      }
+      return prevItems.filter(i => i.dish.id !== dishId);
     });
-    const [isOrderHistoryOpen, setIsOrderHistoryOpen] = useState(false);
-    
-    const [searchQuery, setSearchQuery] = useState('');
-    const [selectedCategory, setSelectedCategory] = useState('all');
-    const [sortOption, setSortOption] = useState('rating');
-    const [isVegOnly, setIsVegOnly] = useState(false);
-    
-    const [favoriteRestaurants, setFavoriteRestaurants] = useState<string[]>(() => {
-        try {
-            const savedFavorites = localStorage.getItem('favoriteRestaurants');
-            return savedFavorites ? JSON.parse(savedFavorites) : [];
-        } catch (error) {
-            return [];
-        }
-    });
+  };
 
-    const [toasts, setToasts] = useState<Toast[]>([]);
-    const [dialogConfig, setDialogConfig] = useState<{
-        isOpen: boolean;
-        title: string;
-        message: string;
-        onConfirm: () => void;
-    } | null>(null);
-    
-    const [isLoading, setIsLoading] = useState(true);
-    const [isBackToTopVisible, setIsBackToTopVisible] = useState(false);
+  const handleEmptyCart = () => {
+    setCartItems([]);
+    setConfirmation(null);
+    addToast('Cart emptied successfully');
+  };
 
-    useEffect(() => {
-        setTimeout(() => {
-            setRestaurants(allRestaurants);
-            setIsLoading(false);
-        }, 1500);
-    }, []);
+  // Order handlers
+  const handleCheckout = () => {
+    const subtotal = cartItems.reduce((sum, item) => sum + (item.dish.price * item.quantity), 0);
+    const taxesAndFees = subtotal * 0.05;
+    const deliveryFee = 40.00;
+    const totalAmount = subtotal + taxesAndFees + deliveryFee;
 
-    useEffect(() => {
-        localStorage.setItem('cartItems', JSON.stringify(cartItems));
-    }, [cartItems]);
+    const newOrder: Order = {
+      id: `ord-${Date.now()}`,
+      date: new Date().toISOString(),
+      items: cartItems,
+      totalAmount: totalAmount,
+      status: 'Processing',
+    };
 
-    useEffect(() => {
-        localStorage.setItem('orders', JSON.stringify(orders));
-    }, [orders]);
-
-    useEffect(() => {
-        localStorage.setItem('favoriteRestaurants', JSON.stringify(favoriteRestaurants));
-    }, [favoriteRestaurants]);
-    
-    useEffect(() => {
-        let result = restaurants;
-
-        if (isVegOnly) {
-            result = result.filter(r => r.isVeg);
-        }
-
-        if (selectedCategory !== 'all') {
-            result = result.filter(r => 
-                r.cuisine.toLowerCase().includes(selectedCategory.toLowerCase()) ||
-                r.dishes.some(d => d.name.toLowerCase().includes(selectedCategory.toLowerCase()))
-            );
-        }
-
-        if (searchQuery) {
-            result = result.filter(r => 
-                r.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                r.cuisine.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                r.dishes.some(d => d.name.toLowerCase().includes(searchQuery.toLowerCase()))
-            );
-        }
-
-        const sortedResult = [...result].sort((a, b) => {
-            if (sortOption === 'rating') {
-                return b.rating - a.rating;
-            }
-            if (sortOption === 'deliveryTime') {
-                const timeA = parseInt(a.deliveryTime);
-                const timeB = parseInt(b.deliveryTime);
-                return timeA - timeB;
-            }
-            return 0;
-        });
-
-        setFilteredRestaurants(sortedResult);
-    }, [restaurants, searchQuery, selectedCategory, sortOption, isVegOnly]);
-
-    useEffect(() => {
-        const handleScroll = () => {
-            if (window.scrollY > 300) {
-                setIsBackToTopVisible(true);
-            } else {
-                setIsBackToTopVisible(false);
-            }
-        };
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
-
-    const showToast = useCallback((message: string, type: 'success' | 'error' = 'success') => {
-        const newToast = { id: Date.now(), message, type };
-        setToasts(prevToasts => [...prevToasts, newToast]);
-        setTimeout(() => {
-            setToasts(currentToasts => currentToasts.filter(t => t.id !== newToast.id));
-        }, 3000);
-    }, []);
-
-    const handleIncreaseQuantity = useCallback((dish: Dish) => {
-        setCartItems(prevItems => {
-            const existingItem = prevItems.find(item => item.dish.id === dish.id);
-            if (existingItem) {
-                return prevItems.map(item =>
-                    item.dish.id === dish.id ? { ...item, quantity: item.quantity + 1 } : item
-                );
-            }
-            return [...prevItems, { dish, quantity: 1 }];
-        });
-        showToast(`${dish.name} added to cart!`);
-    }, [showToast]);
-    
-    const handleDecreaseQuantity = useCallback((dishId: string) => {
-        setCartItems(prevItems => {
-            const existingItem = prevItems.find(item => item.dish.id === dishId);
-            if (existingItem) {
-                if (existingItem.quantity > 1) {
-                    return prevItems.map(item =>
-                        item.dish.id === dishId ? { ...item, quantity: item.quantity - 1 } : item
-                    );
-                } else {
-                    showToast(`${existingItem.dish.name} removed from cart.`, 'error');
-                    return prevItems.filter(item => item.dish.id !== dishId);
-                }
-            }
-            return prevItems;
-        });
-    }, [showToast]);
-
-    
-    const handleToggleFavorite = useCallback((restaurantId: string) => {
-        setFavoriteRestaurants(prev => {
-            const isFavorite = prev.includes(restaurantId);
-            if (isFavorite) {
-                showToast('Removed from favorites', 'error');
-                return prev.filter(id => id !== restaurantId);
-            } else {
-                showToast('Added to favorites');
-                return [...prev, restaurantId];
-            }
-        });
-    }, [showToast]);
-
-    const handleCheckout = () => {
-        const subtotal = cartItems.reduce((sum, item) => sum + item.dish.price * item.quantity, 0);
-        const taxesAndFees = subtotal * 0.05;
-        const deliveryFee = cartItems.length > 0 ? 40.00 : 0;
-        const totalAmount = subtotal + taxesAndFees + deliveryFee;
-
-        const newOrder: Order = {
-            id: `ORD-${Date.now()}`,
-            date: new Date().toISOString(),
-            items: [...cartItems],
-            totalAmount: totalAmount,
-            status: 'Processing',
-        };
-        setOrders(prevOrders => [...prevOrders, newOrder]);
+    setOrders(prev => [...prev, newOrder]);
+    setCartItems([]);
+    setIsCartOpen(false);
+    setConfirmation(null);
+    addToast('Order placed successfully!');
+  };
+  
+  const handleUpdateOrderStatus = (orderId: string, status: OrderStatus) => {
+    setOrders(prev => prev.map(o => o.id === orderId ? {...o, status} : o));
+    addToast(`Order #${orderId.slice(-6)} status updated`);
+  };
+  
+  // Authentication Handlers
+  const handleLogin = (loggedInUser: User) => {
+    setUser(loggedInUser);
+    addToast(`Welcome, ${loggedInUser.name}!`);
+  };
+  
+  const handleLogout = () => {
+    setConfirmation({
+      title: 'Logout',
+      message: 'Are you sure you want to log out?',
+      onConfirm: () => {
+        setUser(null);
         setCartItems([]);
-        setIsCartOpen(false);
-        showToast('Order placed successfully!');
-    };
+        setOrders([]);
+        setConfirmation(null);
+        addToast('You have been logged out.');
+      }
+    });
+  };
+  
+  const handleUpdateProfile = (updatedUser: User) => {
+    setUser(updatedUser);
+    setShowProfile(false);
+    addToast('Profile updated successfully!');
+  };
 
-    const handlePromptCheckout = () => {
-        setDialogConfig({
-            isOpen: true,
-            title: 'Confirm Order',
-            message: 'Are you sure you want to place this order?',
-            onConfirm: () => {
-                handleCheckout();
-                setDialogConfig(null);
-            },
-        });
-    };
+  // --- Render Logic ---
 
-    const handleEmptyCart = () => {
-        setCartItems([]);
-        showToast('Cart emptied.', 'error');
-    };
+  if (isAppLoading) {
+    return <SplashScreen />;
+  }
 
-    const handlePromptEmptyCart = () => {
-        setDialogConfig({
-            isOpen: true,
-            title: 'Empty Cart',
-            message: 'Are you sure you want to remove all items from your cart?',
-            onConfirm: () => {
-                handleEmptyCart();
-                setDialogConfig(null);
-            },
-        });
-    };
-    
-    const handleUpdateStatus = (orderId: string, status: OrderStatus) => {
-        setOrders(prevOrders => prevOrders.map(order => 
-            order.id === orderId ? { ...order, status } : order
-        ));
-        showToast(`Order status updated to ${status}.`);
-    };
-    
-    const cartItemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
+  if (!user) {
+    return <AuthPage onLogin={handleLogin} />;
+  }
+  
+  const totalCartItems = cartItems.reduce((total, item) => total + item.quantity, 0);
 
-    return (
-      <div className="bg-gray-50 min-h-screen flex flex-col font-sans">
-        <Header 
-            onSearch={setSearchQuery}
-            cartItemCount={cartItemCount}
-            onOpenCart={() => setIsCartOpen(true)}
-            onOpenOrderHistory={() => setIsOrderHistoryOpen(true)}
+  return (
+    <div className="bg-gray-900 text-gray-200 min-h-screen font-sans">
+      <Header 
+        cartItemCount={totalCartItems}
+        onCartClick={() => setIsCartOpen(true)}
+        onHistoryClick={() => setIsHistoryOpen(true)}
+        onProfileClick={() => setShowProfile(true)}
+        onLogout={handleLogout}
+        user={user}
+      />
+      
+      <main className="container mx-auto px-4 py-8">
+        <FoodCategoryFilter 
+          categories={categories}
+          selectedCategory={selectedCategory}
+          onSelectCategory={setSelectedCategory}
         />
-        <main className="flex-grow container mx-auto px-4 py-8">
-            <FoodCategoryFilter 
-                categories={allCategories}
-                selectedCategory={selectedCategory}
-                onSelectCategory={setSelectedCategory}
-            />
-
-            <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
-                <h2 className="text-3xl font-bold text-gray-800">
-                    {filteredRestaurants.length} Restaurants
-                </h2>
-                <div className="flex items-center space-x-4">
-                    <div className="flex items-center">
-                        <input
-                            type="checkbox"
-                            id="veg-only"
-                            checked={isVegOnly}
-                            onChange={(e) => setIsVegOnly(e.target.checked)}
-                            className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary-light"
-                        />
-                        <label htmlFor="veg-only" className="ml-2 text-sm font-medium text-gray-700">
-                            Veg Only
-                        </label>
-                    </div>
-                    <select
-                        value={sortOption}
-                        onChange={(e) => setSortOption(e.target.value)}
-                        className="border-gray-300 rounded-md shadow-sm focus:border-primary-light focus:ring focus:ring-primary-light focus:ring-opacity-50 text-sm"
-                    >
-                        <option value="rating">Sort by Rating</option>
-                        <option value="deliveryTime">Sort by Delivery Time</option>
-                    </select>
-                </div>
-            </div>
-
-            {isLoading ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                    {Array.from({ length: 8 }).map((_, index) => <SkeletonRestaurantCard key={index} />)}
-                </div>
-            ) : (
-                <RestaurantList 
-                    restaurants={filteredRestaurants}
-                    onSelectRestaurant={setSelectedRestaurant}
-                    favoriteRestaurants={favoriteRestaurants}
-                    onToggleFavorite={handleToggleFavorite}
-                />
-            )}
-        </main>
-        
-        <Footer />
-        
-        {selectedRestaurant && (
-            <RestaurantDetail 
-                restaurant={selectedRestaurant}
-                onClose={() => setSelectedRestaurant(null)}
-                cartItems={cartItems}
-                onIncreaseQuantity={handleIncreaseQuantity}
-                onDecreaseQuantity={handleDecreaseQuantity}
-            />
-        )}
-        
-        <CartView 
-            isOpen={isCartOpen}
-            onClose={() => setIsCartOpen(false)}
-            cartItems={cartItems}
-            onIncreaseQuantity={handleIncreaseQuantity}
-            onDecreaseQuantity={handleDecreaseQuantity}
-            onPromptEmptyCart={handlePromptEmptyCart}
-            onPromptCheckout={handlePromptCheckout}
+        <RestaurantList 
+          restaurants={filteredRestaurants}
+          onSelectRestaurant={setSelectedRestaurant}
+          isLoading={isRestaurantsLoading}
         />
+      </main>
+      
+      <Footer onAboutClick={() => setIsAboutUsOpen(true)} />
 
-        <OrderHistory
-            isOpen={isOrderHistoryOpen}
-            onClose={() => setIsOrderHistoryOpen(false)}
-            orders={orders}
-            onUpdateStatus={handleUpdateStatus}
+      {/* Modals and Overlays */}
+      {selectedRestaurant && (
+        <RestaurantDetail 
+          restaurant={selectedRestaurant} 
+          onClose={() => setSelectedRestaurant(null)}
+          cartItems={cartItems}
+          onIncreaseQuantity={handleIncreaseQuantity}
+          onDecreaseQuantity={handleDecreaseQuantity}
         />
-
-        <ToastContainer toasts={toasts} />
-
-        {dialogConfig && (
-            <ConfirmationDialog
-                isOpen={dialogConfig.isOpen}
-                title={dialogConfig.title}
-                message={dialogConfig.message}
-                onConfirm={dialogConfig.onConfirm}
-                onCancel={() => setDialogConfig(null)}
-                confirmText={dialogConfig.title.includes('Order') ? 'Place Order' : 'Confirm'}
-            />
-        )}
-
-        <BackToTopButton isVisible={isBackToTopVisible} />
-      </div>
-    );
+      )}
+      
+      <CartView 
+        isOpen={isCartOpen} 
+        onClose={() => setIsCartOpen(false)} 
+        cartItems={cartItems}
+        onIncreaseQuantity={handleIncreaseQuantity}
+        onDecreaseQuantity={handleDecreaseQuantity}
+        onPromptEmptyCart={() => setConfirmation({ title: 'Empty Cart', message: 'Are you sure you want to remove all items from your cart?', onConfirm: handleEmptyCart })}
+        onPromptCheckout={() => setConfirmation({ title: 'Confirm Order', message: 'Ready to place your order?', onConfirm: handleCheckout, confirmText: 'Place Order' })}
+      />
+      
+      <OrderHistory 
+        isOpen={isHistoryOpen} 
+        onClose={() => setIsHistoryOpen(false)} 
+        orders={orders}
+        onUpdateStatus={handleUpdateOrderStatus}
+      />
+      
+      {isAboutUsOpen && <AboutUs onClose={() => setIsAboutUsOpen(false)} />}
+      
+      {showProfile && user && (
+        <ProfilePage user={user} onClose={() => setShowProfile(false)} onUpdateProfile={handleUpdateProfile} />
+      )}
+      
+      {confirmation && (
+        <ConfirmationDialog 
+          isOpen={true}
+          title={confirmation.title}
+          message={confirmation.message}
+          onConfirm={confirmation.onConfirm}
+          onCancel={() => setConfirmation(null)}
+          confirmText={confirmation.confirmText}
+        />
+      )}
+      
+      <ToastContainer toasts={toasts} />
+      <BackToTopButton isVisible={showBackToTop} />
+    </div>
+  );
 };
 
 export default App;

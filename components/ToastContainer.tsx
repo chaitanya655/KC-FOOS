@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { CheckCircleIcon } from './IconComponents';
 
@@ -24,7 +25,7 @@ const ToastMessage: React.FC<{ toast: Toast }> = ({ toast }) => {
 
     return (
         <div 
-            className={`flex items-center bg-secondary text-white p-4 rounded-lg shadow-lg ${isExiting ? 'animate-toast-out' : 'animate-toast-in'}`}
+            className={`flex items-center bg-primary text-white p-4 rounded-lg shadow-lg ${isExiting ? 'animate-toast-out' : 'animate-toast-in'}`}
         >
             <CheckCircleIcon className="h-6 w-6 mr-3" />
             <span className="font-semibold">{toast.message}</span>

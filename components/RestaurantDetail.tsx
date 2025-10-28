@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import type { Restaurant, Dish, CartItem } from '../types';
 import { CloseIcon, StarIcon, DeliveryScooterIcon } from './IconComponents';
@@ -17,20 +18,20 @@ const RestaurantDetail: React.FC<RestaurantDetailProps> = ({ restaurant, onClose
 
   return (
     <>
-      <div className="fixed inset-0 bg-black/50 z-20 flex justify-center items-center animate-fadeIn" onClick={onClose}>
+      <div className="fixed inset-0 bg-black/70 z-20 flex justify-center items-center animate-fadeIn" onClick={onClose}>
         <div 
-          className="bg-white w-full max-w-4xl h-[90vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden" 
+          className="bg-gray-800 text-gray-100 w-full max-w-4xl h-[90vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden" 
           onClick={(e) => e.stopPropagation()}
         >
           <div className="relative">
               <img src={restaurant.imageUrl} alt={restaurant.name} className="w-full h-64 object-cover"/>
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
               <button 
                   onClick={onClose} 
-                  className="absolute top-4 right-4 bg-white/80 p-2 rounded-full hover:bg-white transition-colors z-10"
+                  className="absolute top-4 right-4 bg-gray-900/80 p-2 rounded-full hover:bg-gray-700 transition-colors z-10"
                   aria-label="Close restaurant details"
               >
-                  <CloseIcon className="w-6 h-6 text-gray-800" />
+                  <CloseIcon className="w-6 h-6 text-gray-100" />
               </button>
               <div className="absolute bottom-0 left-0 p-6 text-white">
                   <h2 className="text-4xl font-extrabold tracking-tight">{restaurant.name}</h2>
@@ -38,7 +39,7 @@ const RestaurantDetail: React.FC<RestaurantDetailProps> = ({ restaurant, onClose
                   <p className="text-sm mt-1">{restaurant.address}</p>
                   <div className="flex items-center text-sm font-semibold mt-4 space-x-6">
                       <div className="flex items-center">
-                          <StarIcon className="w-5 h-5 text-green-400 mr-1.5" />
+                          <StarIcon className="w-5 h-5 text-yellow-400 mr-1.5" />
                           <span>{restaurant.rating.toFixed(1)} Rating</span>
                       </div>
                       <div className="flex items-center">
@@ -50,7 +51,7 @@ const RestaurantDetail: React.FC<RestaurantDetailProps> = ({ restaurant, onClose
           </div>
 
           <div className="p-6 flex-grow overflow-y-auto">
-            <h3 className="text-2xl font-bold text-gray-800 mb-4">Menu</h3>
+            <h3 className="text-2xl font-bold text-gray-100 mb-4">Menu</h3>
             <div className="space-y-4">
               {restaurant.dishes.map(dish => {
                 const cartItem = cartItems.find(item => item.dish.id === dish.id);

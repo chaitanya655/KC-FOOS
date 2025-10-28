@@ -1,3 +1,4 @@
+
 import React from 'react';
 import type { FoodCategory } from '../types';
 import { AllIcon, BiryaniIcon, DosaIcon, ThaliIcon, CurryIcon, KebabIcon, DessertIcon, IdliIcon } from './IconComponents';
@@ -34,7 +35,7 @@ const FoodCategoryFilter: React.FC<FoodCategoryFilterProps> = ({ categories, sel
 
   return (
     <div className="mb-8">
-      <h2 className="text-3xl font-bold text-gray-800 mb-4">What's on your mind?</h2>
+      <h2 className="text-3xl font-bold text-gray-100 mb-4">What's on your mind?</h2>
       <div className="flex space-x-6 overflow-x-auto pb-4 -mx-4 px-4">
         {displayCategories.map(category => {
           const IconComponent = getCategoryIcon(category.id);
@@ -54,7 +55,7 @@ const FoodCategoryFilter: React.FC<FoodCategoryFilterProps> = ({ categories, sel
                 }`}
               />
               <div className={`mt-2 flex items-center justify-center space-x-1.5 transition-colors duration-300 ${
-                selectedCategory === category.id ? 'text-primary' : 'text-gray-700'
+                selectedCategory === category.id ? 'text-primary' : 'text-gray-300'
               }`}>
                 {IconComponent && <IconComponent className="h-4 w-4" />}
                 <p className="font-semibold">{category.name}</p>

@@ -8,11 +8,6 @@ export interface Dish {
   bestseller?: boolean;
 }
 
-export interface CartItem {
-  dish: Dish;
-  quantity: number;
-}
-
 export interface Restaurant {
   id: string;
   name: string;
@@ -27,18 +22,29 @@ export interface Restaurant {
   dishes: Dish[];
 }
 
-export interface FoodCategory {
-  id: string;
-  name: string;
-  imageUrl: string;
+export interface CartItem {
+  dish: Dish;
+  quantity: number;
 }
 
 export type OrderStatus = 'Processing' | 'Out for Delivery' | 'Delivered';
 
 export interface Order {
   id: string;
-  date: string; // ISO string
+  date: string;
   items: CartItem[];
   totalAmount: number;
   status: OrderStatus;
+}
+
+export interface FoodCategory {
+  id: string;
+  name: string;
+  imageUrl: string;
+}
+
+export interface User {
+  name: string;
+  email: string;
+  address: string;
 }
